@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feature Planning Swarm"
+  short_description: "Shape a feature into a few concrete implementation plans."
+  default_prompt: "Use $feature-planning-swarm to shape this feature idea with four focused planning lanes and return 2-4 implementation plans plus one recommendation."

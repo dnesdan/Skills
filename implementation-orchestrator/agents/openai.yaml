@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implementation Orchestrator"
+  short_description: "Turn an approved plan into safe parallel execution."
+  default_prompt: "Use $implementation-orchestrator to turn the approved plan into dependency-aware work packets, parallel execution waves, and the right validation gates."
