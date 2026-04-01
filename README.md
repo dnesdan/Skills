@@ -7,6 +7,7 @@ A focused collection of multi-agent planning and delivery skills for shaping fea
 | Skill | Folder | Type | Description |
 | --- | --- | --- | --- |
 | Feature Planning Swarm | `feature-planning-swarm` | Advisory swarm | Turns a feature idea into multiple concrete implementation plans with one recommended path. |
+| Feature Extension Swarm | `feature-extension-swarm` | Advisory swarm | Scans the current repo and app surface to propose the most valuable next feature extensions for competitiveness. |
 | Redesign Swarm | `redesign-swarm` | Advisory swarm | Analyzes an existing surface and proposes redesign directions with tradeoffs and a recommendation. |
 | Release Readiness Swarm | `release-readiness-swarm` | Advisory swarm | Assesses whether an app, feature, or build is ready to ship and returns one clear release verdict. |
 | Implementation Orchestrator | `implementation-orchestrator` | Execution orchestrator | Converts an approved plan into dependency-aware work packets, parallel execution waves, and validation gates. |
@@ -14,9 +15,10 @@ A focused collection of multi-agent planning and delivery skills for shaping fea
 ## Suggested Flow
 
 1. Use `feature-planning-swarm` when a feature idea needs shaping before coding.
-2. Use `redesign-swarm` when a current flow or screen needs a stronger UX or visual direction.
-3. Use `release-readiness-swarm` before shipping a build, major feature, or redesign.
-4. Use `implementation-orchestrator` after a plan has been chosen and the work should actually be executed.
+2. Use `feature-extension-swarm` when you want the repo analyzed for product gaps and the strongest next features to add.
+3. Use `redesign-swarm` when a current flow or screen needs a stronger UX or visual direction.
+4. Use `release-readiness-swarm` before shipping a build, major feature, or redesign.
+5. Use `implementation-orchestrator` after a plan has been chosen and the work should actually be executed.
 
 ## Install
 

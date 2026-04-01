@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feature Extension Swarm"
+  short_description: "Scan the repo and propose the strongest next features."
+  default_prompt: "Use $feature-extension-swarm to scan this repo, identify the strongest next feature extensions for competitiveness, and recommend what to build next."
