@@ -1,0 +1,4 @@
+interface:
+  display_name: "iOS App Preview Videos"
+  short_description: "Capture 15s iOS App Store preview videos"
+  default_prompt: "Use $ios-app-preview-videos to capture, export, add touch overlays, mix app sounds, and validate a 15-second iOS App Store preview video."
