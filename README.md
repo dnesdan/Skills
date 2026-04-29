@@ -1,6 +1,6 @@
 # Skills
 
-A focused collection of multi-agent planning and delivery skills for shaping features, evaluating redesigns, checking release readiness, and coordinating implementation safely.
+A focused collection of reusable Codex skills for product planning, delivery orchestration, store screenshot production, redesign evaluation, and release readiness.
 
 ## Included Skills
 
@@ -11,6 +11,7 @@ A focused collection of multi-agent planning and delivery skills for shaping fea
 | Redesign Swarm | `redesign-swarm` | Advisory swarm | Analyzes an existing surface and proposes redesign directions with tradeoffs and a recommendation. |
 | Release Readiness Swarm | `release-readiness-swarm` | Advisory swarm | Assesses whether an app, feature, or build is ready to ship and returns one clear release verdict. |
 | Implementation Orchestrator | `implementation-orchestrator` | Execution orchestrator | Converts an approved plan into dependency-aware work packets, parallel execution waves, and validation gates. |
+| Store Framed Screenshots | `store-framed-screenshots` | Marketing asset workflow | Creates consistent App Store and Google Play framed screenshots from truthful raw app captures using internal imagegen. |
 
 ## Suggested Flow
 
@@ -19,6 +20,7 @@ A focused collection of multi-agent planning and delivery skills for shaping fea
 3. Use `redesign-swarm` when a current flow or screen needs a stronger UX or visual direction.
 4. Use `release-readiness-swarm` before shipping a build, major feature, or redesign.
 5. Use `implementation-orchestrator` after a plan has been chosen and the work should actually be executed.
+6. Use `store-framed-screenshots` when raw app screenshots need polished store-ready frames, exact dimensions, localization, and validation.
 
 ## Install
 
