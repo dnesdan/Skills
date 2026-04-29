@@ -144,6 +144,23 @@ Define this once per set:
 
 If imagegen cannot honor exact pixel coordinates, describe the layout lock in relative terms and verify visually after every frame.
 
+## Campaign Bible Template
+
+Use this when planning more than one framed screenshot:
+
+```markdown
+| Property | Value |
+|----------|-------|
+| Platform mode | iOS iPhone / iPad / Android phone / Android tablet / mixed |
+| Device presentation | Frame style, aspect ratio, shadow, scale, and anchor |
+| Visual system | Palette, background material, accent language, and texture level |
+| Typography mood | Headline weight, alignment, line count, and text-safe region |
+| Composition rhythm | Strictly consistent / 2-template campaign / creative variation |
+| No-go patterns | Warped hardware, unreadable UI, generic gradients, clutter, fake claims |
+```
+
+Keep the campaign bible short enough to paste into every imagegen prompt. It should make the set feel like one campaign, not a folder of unrelated mockups.
+
 ## Localization Workflow
 
 Default to English first:

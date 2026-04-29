@@ -21,6 +21,21 @@ For a new visual direction:
 
 Use one generation per distinct final frame. Never ask imagegen to generate a complete 10-frame set as one combined image.
 
+## Campaign Bible Prompt Block
+
+For multi-frame sets, write this block once and reuse it in every prompt:
+
+```text
+Campaign bible:
+- Platform mode: <iOS / Android / tablet / mixed>
+- Device presentation: <hardware style>, physically correct aspect ratio, consistent frame, consistent scale, controlled shadow.
+- Visual system: <palette>, <background material>, <accent language>, <typography mood>, <headline treatment>.
+- Composition rules: same canvas, same headline zone, same device anchor, same safe margins, same overall hierarchy.
+- Content rules: preserve the raw app UI exactly, keep the device screen readable, use only the approved headline, add no extra store badges or claims.
+```
+
+Do not let later frames drift into a different visual system. Variation is allowed only in the raw screenshot, headline text, and subtle approved accents.
+
 ## Strict Layout-Lock Prompt Template
 
 ```text
@@ -35,8 +50,10 @@ Input image:
 - Do not alter in-app text, icons, colors, board state, data, status bar, or navigation.
 
 Layout lock:
+- Campaign bible: <paste the approved campaign bible for this set>.
 - Use the same device placement as the rest of the set.
 - Device frame: <realistic iPhone/iPad/Android phone/tablet frame>.
+- Device aspect ratio: keep the hardware and visible screen geometry faithful to <device class>. Do not stretch, squash, widen, narrow, or cosmetically distort the phone/tablet; preserve Image 1's aspect ratio inside the device screen.
 - Device position: <centered/lower anchored; relative top and height>.
 - Device scale: <screen fills about N% of canvas height/width>.
 - Headline zone: <top band, centered/left aligned, max lines>.
@@ -53,7 +70,7 @@ Style:
 - Strong first-glance hierarchy, safe margins, readable UI.
 
 Avoid:
-- Fake UI, fake ratings, badges, awards, prices, promotional claims, calls to action, watermarks, wrong hardware, clutter, tiny text, cropped headline, changing device placement.
+- Fake UI, fake ratings, badges, awards, prices, promotional claims, calls to action, watermarks, wrong hardware, warped devices, clutter, tiny text, cropped headline, changing device placement.
 ```
 
 ## Creative Variation Template
@@ -127,6 +144,13 @@ Editorial:
 
 ## Device Framing Rules
 
+Aspect ratio discipline:
+
+- Keep the visible hardware and screen proportions faithful to the selected device class.
+- Preserve the raw screenshot aspect ratio inside the device screen; do not crop, stretch, squash, or pad it in a way that makes the UI look like a different phone/tablet shape.
+- If the raw screenshot ratio does not match the requested device frame, pause and flag the mismatch before generating or use a matching device slot/frame.
+- Reject outputs where the phone looks too narrow, too wide, too tall, stubby, warped, or inconsistent with the set.
+
 iOS:
 
 - Use iPhone frames for iPhone outputs and iPad frames for iPad outputs.
@@ -156,6 +180,17 @@ Imagegen may make mistakes in rendered text. Improve reliability by:
 
 If exact text still fails after targeted iteration, keep the imagegen background/device art and add text with a deterministic editor or project screenshot tooling when available.
 
+## Regeneration Rules
+
+Regenerate or choose a different frame path when:
+
+- The raw app UI is edited, redrawn, translated, blurred, or cropped incorrectly.
+- The phone/tablet aspect ratio is visibly wrong or inconsistent with the set.
+- The device frame uses the wrong platform cues.
+- The output adds unapproved text, fake badges, ratings, prices, CTAs, or watermarks.
+- The layout lock drifts: device anchor, device scale, headline zone, typography, or background system changes unexpectedly.
+- The image looks generic, cluttered, or imagegen-made in a way that weakens store conversion.
+
 ## Validation Checklist
 
 Check every final image:
@@ -167,6 +202,7 @@ Check every final image:
 - Text is readable at store thumbnail scale.
 - No hallucinated badges, prices, ratings, claims, CTAs, or UI.
 - No device-screen cropping mistakes.
+- Device and screen aspect ratio look physically correct for the selected device class.
 - Device placement and scale match the set's layout lock.
 - First three screenshots form a clear conversion story.
 - Output file is saved in the requested workspace location.

@@ -1,6 +1,6 @@
 ---
 name: store-framed-screenshots
-description: Create polished App Store and Google Play framed screenshot sets with internal imagegen from real raw app screenshots. Use when planning, capturing, framing, localizing, resizing, validating, or regenerating store screenshots for iPhone, iPad, Android phone, or Android tablet, especially when consistent device placement, exact store dimensions, and truthful app UI preservation matter.
+description: Create polished App Store and Google Play framed screenshot sets with internal imagegen from real raw app screenshots. Use when planning, capturing, framing, contact-sheet reviewing, localizing, resizing, validating, or regenerating store screenshots for iPhone, iPad, Android phone, or Android tablet, especially when consistent device placement, exact store dimensions, truthful app UI preservation, and correct device proportions matter.
 ---
 
 # Store Framed Screenshots
@@ -21,6 +21,7 @@ Default to an English master set first. Generate localized sets only after the E
 - Keep raw screenshots and framed outputs separate.
 - Do not let imagegen invent or alter in-app UI, ratings, claims, prices, subscription terms, badges, awards, store logos, or platform chrome.
 - Use iPhone/iPad frames for iOS outputs and Android phone/tablet frames for Android outputs.
+- Keep device and visible screen aspect ratios physically faithful to the selected device class; never stretch, squash, or cosmetically distort the raw screenshot inside a frame.
 - Respect Google Play restrictions: no misleading ranking, price, promo, testimonial, or call-to-action text; keep taglines minimal.
 - Localize overlays and raw app UI separately. Do not translate in-app UI inside a screenshot unless the user asks for a rough concept.
 - Validate every final image visually and with file dimensions before handoff.
@@ -38,6 +39,18 @@ Use a **layout lock** per set:
 - Use multi-device, angled, cropped, or alternating layouts only when the user asks for creativity or when a specific frame truly needs comparison.
 
 When the user asks for creative variation, define 2-3 approved layout templates first and apply them intentionally instead of improvising per frame.
+
+## Campaign Quality Bar
+
+Before batch generation, define a compact campaign bible for the set:
+
+- Platform mode: iOS, Android, tablet, or mixed platform.
+- Device presentation: hardware style, aspect ratio, scale, shadow, and anchor.
+- Visual system: palette, background material, accent language, typography mood, headline treatment, and safe margins.
+- Content rules: real raw UI only, one benefit per frame, readable thumbnail hierarchy, and no unsupported claims.
+- Consistency rules: keep the campaign bible stable across every frame, locale, and variant unless a documented store/device constraint forces an adjustment.
+
+Avoid default imagegen slop: warped phones, inconsistent mockups, generic purple-blue gradients, noisy decorative clutter, tiny unreadable UI, extra invented text, fake store badges, and repeated layouts that do not advance the screenshot story.
 
 ## Workflow
 
@@ -66,7 +79,8 @@ When the user asks for creative variation, define 2-3 approved layout templates 
    - Exclude blank, debug, unstable, duplicated, or visually weak raw shots from final framing.
 
 5. Define the layout lock:
-   - Choose canvas size, headline zone, device scale, device anchor, and background system before batch generation.
+   - Choose canvas size, headline zone, device scale, device anchor, aspect-ratio constraints, and background system before batch generation.
+   - Write a compact campaign bible when the set has more than one frame or locale.
    - Write these values into every imagegen prompt.
    - Generate one style frame first for new visual directions. After approval, reuse the same layout lock for the remaining frames.
 
@@ -85,6 +99,7 @@ When the user asks for creative variation, define 2-3 approved layout templates 
 8. Validate:
    - Correct store slot and dimensions.
    - Correct platform frame and hardware cues.
+   - Physically believable phone/tablet and screen aspect ratio.
    - Exact headline text and no extra text.
    - Raw UI preserved and readable.
    - Layout placement consistent across the set unless creative variation was requested.
@@ -95,11 +110,12 @@ When the user asks for creative variation, define 2-3 approved layout templates 
 
 Use subagents only when the current Codex environment supports them and the task benefits from parallelism:
 
-- Explorer/reviewer: inspect raw screenshot folders and flag weak, blank, duplicated, or policy-risk shots.
-- Copy planner: draft a frame plan and headline alternatives from product context.
-- Platform verifier: check final dimensions, naming, locale coverage, and visual consistency.
+- Raw-shot auditor: inspect screenshot folders and flag weak, blank, duplicated, debug, aspect-ratio-mismatched, or policy-risk shots.
+- Copy planner: draft a frame plan and headline alternatives from product context, metadata, or target keywords.
+- Prompt planner: prepare the campaign bible, layout lock, and per-frame imagegen prompts.
+- Platform verifier: check final dimensions, naming, locale coverage, device proportions, text accuracy, and visual consistency.
 
-Keep generation itself in the main thread unless workers have disjoint output folders. Never let multiple agents overwrite the same screenshot set.
+Keep generation itself in the main thread unless workers have disjoint output folders. Never let multiple agents overwrite the same screenshot set. When subagents are used, consolidate their findings into one plan before prompting imagegen.
 
 ## Output Conventions
 
