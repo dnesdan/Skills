@@ -30,7 +30,7 @@ Campaign bible:
 - Platform mode: <iOS / Android / tablet / mixed>
 - Device presentation: <hardware style>, physically correct aspect ratio, consistent frame, consistent scale, controlled shadow.
 - Visual system: <palette>, <background material>, <accent language>, <typography mood>, <headline treatment>.
-- Composition rules: same canvas, same headline zone, same device anchor, same safe margins, same overall hierarchy.
+- Composition rules: same canvas, same headline zone, same headline cap height/line height, same device anchor, same safe margins, same overall hierarchy.
 - Content rules: preserve the raw app UI exactly, keep the device screen readable, use only the approved headline, add no extra store badges or claims.
 ```
 
@@ -52,11 +52,12 @@ Input image:
 Layout lock:
 - Campaign bible: <paste the approved campaign bible for this set>.
 - Use the same device placement as the rest of the set.
-- Device frame: <realistic iPhone/iPad/Android phone/tablet frame>.
+- Device frame: <realistic named iPhone/iPad/Android phone/tablet frame>, with believable hardware cues and shadow.
 - Device aspect ratio: keep the hardware and visible screen geometry faithful to <device class>. Do not stretch, squash, widen, narrow, or cosmetically distort the phone/tablet; preserve Image 1's aspect ratio inside the device screen.
 - Device position: <centered/lower anchored; relative top and height>.
 - Device scale: <screen fills about N% of canvas height/width>.
 - Headline zone: <top band, centered/left aligned, max lines>.
+- Typography lock: same font family, weight, cap height, line height, alignment, text box, and color as the approved set reference. Do not auto-shrink or auto-enlarge one headline independently; fit copy with line breaks or shorter text.
 - Background system: <brand background and accent style>.
 - Only decorative accents may vary subtly between frames.
 
@@ -94,7 +95,7 @@ Use case: style-transfer
 Asset type: regenerated framed store screenshot
 Primary request: Recreate the approved screenshot style using the new raw screenshot and updated headline.
 Input images: Image 1 is the new raw screenshot and edit target. Image 2 is the style reference only.
-Layout: Preserve the same device placement, scale, headline zone, background system, and typography mood as Image 2.
+Layout: Preserve the same device placement, scale, headline zone, background system, and exact headline typography scale as Image 2.
 Constraints: Preserve Image 1's UI exactly. Borrow only layout, background style, device framing, typography mood, and visual polish from Image 2. Do not copy old text or old app UI.
 Text outside device: "<new headline>"
 ```
@@ -176,6 +177,7 @@ Imagegen may make mistakes in rendered text. Improve reliability by:
 - Quoting exact text.
 - Avoiding tiny micro-copy.
 - Asking for one headline region with generous padding.
+- Supplying the first approved framed image as a style reference and explicitly locking headline cap height and line height.
 - Validating every generated output visually.
 
 If exact text still fails after targeted iteration, keep the imagegen background/device art and add text with a deterministic editor or project screenshot tooling when available.
@@ -196,9 +198,11 @@ Regenerate or choose a different frame path when:
 Check every final image:
 
 - Correct platform frame.
+- Real device hardware cues are present and consistent with the platform.
 - Correct raw screenshot and locale.
 - Raw UI has not changed.
 - Headline text is exact.
+- Headline typography scale, line height, position, and color match the approved set reference.
 - Text is readable at store thumbnail scale.
 - No hallucinated badges, prices, ratings, claims, CTAs, or UI.
 - No device-screen cropping mistakes.

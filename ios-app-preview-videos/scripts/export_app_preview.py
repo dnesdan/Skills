@@ -154,45 +154,46 @@ def render_video(
     )
 
 
-def derive_audio_events(app: str, events: list[dict[str, Any]], victory_delay: float) -> list[dict[str, Any]]:
-    if app == "none" or not events:
+def derive_audio_events(
+    mode: str,
+    events: list[dict[str, Any]],
+    victory_delay: float,
+    tap_sound: str,
+    action_sound: str,
+    palette_sound: str,
+    victory_sound: str,
+) -> list[dict[str, Any]]:
+    if mode == "none" or not events:
         return []
 
-    audio: list[dict[str, Any]] = [{"t": event_float(events[0], "t"), "sound": "tap", "volume": 0.32}]
-    moves = events[1:]
-
-    if app == "slant":
-        audio.extend({"t": event_float(event, "t"), "sound": "line", "volume": 0.68} for event in moves)
-    elif app == "hashi":
-        for index, event in enumerate(moves):
-            audio.append(
-                {
-                    "t": event_float(event, "t"),
-                    "sound": "tap" if index % 2 == 0 else "bridge",
-                    "volume": 0.28 if index % 2 == 0 else 0.76,
-                }
-            )
-    elif app == "hue":
-        for event in moves:
+    audio: list[dict[str, Any]] = []
+    for index, event in enumerate(events):
+        if mode == "tap":
+            sound = tap_sound
+            volume = 0.32
+        elif mode == "action":
+            sound = tap_sound if index == 0 else action_sound
+            volume = 0.32 if index == 0 else 0.68
+        elif mode == "alternating":
+            sound = tap_sound if index == 0 or index % 2 == 0 else action_sound
+            volume = 0.32 if sound == tap_sound else 0.68
+        elif mode == "palette":
             label = str(event.get("label", "")).lower()
-            audio.append(
-                {
-                    "t": event_float(event, "t"),
-                    "sound": "place" if "palette" in label else "tap",
-                    "volume": 0.62 if "palette" in label else 0.32,
-                }
-            )
-    else:
-        raise ValueError(f"unsupported --derive-audio value: {app}")
+            is_palette_event = any(token in label for token in ("palette", "theme", "color", "colour"))
+            sound = palette_sound if is_palette_event else tap_sound
+            volume = 0.62 if is_palette_event else 0.32
+        else:
+            raise ValueError(f"unsupported --derive-audio value: {mode}")
 
-    if moves:
-        audio.append(
-            {
-                "t": min(14.0, event_float(moves[-1], "t") + victory_delay),
-                "sound": "victory",
-                "volume": 0.86,
-            }
-        )
+        audio.append({"t": event_float(event, "t"), "sound": sound, "volume": volume})
+
+    audio.append(
+        {
+            "t": min(14.0, event_float(events[-1], "t") + victory_delay),
+            "sound": victory_sound,
+            "volume": 0.86,
+        }
+    )
     return audio
 
 
@@ -281,7 +282,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--events", type=Path, help="JSON event log with t, x, y, label")
     parser.add_argument("--audio-events", type=Path, help="JSON list with t, sound, volume")
     parser.add_argument("--sound-dir", type=Path, help="Directory containing sound-name.mp3 files")
-    parser.add_argument("--derive-audio", choices=["none", "hue", "slant", "hashi"], default="none")
+    parser.add_argument("--derive-audio", choices=["none", "tap", "action", "alternating", "palette"], default="none")
+    parser.add_argument("--tap-sound", default="tap", help="Sound filename stem for ordinary taps")
+    parser.add_argument("--action-sound", default="place", help="Sound filename stem for generic game actions")
+    parser.add_argument("--palette-sound", default="place", help="Sound filename stem for palette/theme/color events")
+    parser.add_argument("--victory-sound", default="victory", help="Sound filename stem for the final success sound")
     parser.add_argument("--victory-delay", type=float, default=0.75)
     parser.add_argument("--duration", type=float, default=15.0)
     parser.add_argument("--fps", type=int, default=30)
@@ -299,7 +304,15 @@ def main() -> None:
     events = load_json(args.events)
     audio_events = load_json(args.audio_events)
     if not audio_events:
-        audio_events = derive_audio_events(args.derive_audio, events, args.victory_delay)
+        audio_events = derive_audio_events(
+            args.derive_audio,
+            events,
+            args.victory_delay,
+            args.tap_sound,
+            args.action_sound,
+            args.palette_sound,
+            args.victory_sound,
+        )
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     if args.touch_output is not None:

@@ -1,6 +1,6 @@
 ---
 name: ios-app-preview-videos
-description: Capture, regenerate, export, and validate iOS App Store preview videos from Simulator, especially 15-second gameplay or product marketing captures with release builds, normal navigation, staged in-progress states, touch overlays, and app sound effects. Use when asked to make App Store videos, preview videos, gameplay recordings, simulator marketing captures, or regenerate Hue, Slant, Hashi, MiniHue, Akari Glow, or similar iOS app videos.
+description: Capture, regenerate, export, and validate iOS App Store preview videos from Simulator, especially 15-second gameplay or product marketing captures with release builds, normal navigation, staged in-progress states, touch overlays, and app sound effects. Use when asked to make App Store videos, preview videos, gameplay recordings, simulator marketing captures, or regenerate iOS app preview videos.
 ---
 
 # iOS App Preview Videos
@@ -63,7 +63,7 @@ local_screenshots/app-preview/<app>/<app>-release-fresh-win-touch-appstore-1080x
    ```json
    [
      {"t": 0.95, "x": 201.0, "y": 411.0, "label": "Easy menu"},
-     {"t": 3.52, "x": 200.2, "y": 428.8, "label": "slant 2,2"}
+     {"t": 3.52, "x": 200.2, "y": 428.8, "label": "game action 2,2"}
    ]
    ```
 
@@ -93,12 +93,12 @@ exports:
 
 ```bash
 python3 <skill>/scripts/export_app_preview.py \
-  --input local_screenshots/app-preview/slant/slant-release-fresh-win-raw-native.mp4 \
-  --events local_screenshots/app-preview/slant/slant-release-fresh-win-events.json \
-  --output local_screenshots/app-preview/slant/slant-release-fresh-win-clean-appstore-1080x1920.mp4 \
-  --touch-output local_screenshots/app-preview/slant/slant-release-fresh-win-touch-appstore-1080x1920.mp4 \
-  --sound-dir SharedGameUI/Sources/SharedGameUI/Resources/Sounds \
-  --derive-audio slant
+  --input local_screenshots/app-preview/<app>/<app>-release-fresh-win-raw-native.mp4 \
+  --events local_screenshots/app-preview/<app>/<app>-release-fresh-win-events.json \
+  --output local_screenshots/app-preview/<app>/<app>-release-fresh-win-clean-appstore-1080x1920.mp4 \
+  --touch-output local_screenshots/app-preview/<app>/<app>-release-fresh-win-touch-appstore-1080x1920.mp4 \
+  --sound-dir <path-to-app-sounds> \
+  --derive-audio alternating
 ```
 
 When automatic sound derivation is too rough, pass an explicit audio plan:
@@ -113,11 +113,14 @@ When automatic sound derivation is too rough, pass an explicit audio plan:
 
 Then run with `--audio-events audio-plan.json --sound-dir <Sounds>`.
 
-## Light-Up Monorepo Notes
+Generic `--derive-audio` modes:
 
-When working in the `light-up-game` puzzle monorepo, read `references/light-up-game-notes.md` before staging
-database states or mixing sounds. It contains the project-specific Release, CoreData, Hashi, Slant, Hue, and
-SharedGameUI sound lessons from prior captures.
+- `tap`: every recorded event uses `tap.mp3`, then a final `victory.mp3`.
+- `action`: the first event uses `tap.mp3`; later events use the configurable action sound, then `victory.mp3`.
+- `alternating`: the first event uses `tap.mp3`; later events alternate action and tap sounds, then `victory.mp3`.
+- `palette`: event labels containing `palette`, `theme`, `color`, or `colour` use the configurable palette sound; other events use `tap.mp3`, then `victory.mp3`.
+
+Use `--tap-sound`, `--action-sound`, `--palette-sound`, and `--victory-sound` when the app's bundled sound filenames differ.
 
 ## Response Shape
 
