@@ -97,6 +97,13 @@ Avoid default imagegen slop: warped phones, inconsistent mockups, generic purple
 
 7. Localize after English approval:
    - Translate overlay headlines from the approved English plan.
+   - For framed screenshot localizations, use the approved English framed screenshot as the edit target and run
+     imagegen in `text-localization` mode. Tell imagegen to replace only the marketing headline text with the
+     translated copy while preserving the device, app UI, background, typography style, layout, shadows, and
+     canvas geometry.
+   - Do not recreate localized framed screenshots with HTML/CSS, PIL, canvas, or other deterministic
+     re-compositing once an English framed master has been approved, unless the user explicitly asks for a
+     code-native rebuild.
    - Use localized raw app screenshots whenever possible.
    - Keep the same layout lock across locales unless text expansion forces a documented adjustment.
    - For RTL languages, mirror only when the composition benefits from native RTL flow.
