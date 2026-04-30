@@ -27,6 +27,8 @@ local_screenshots/app-preview/<app>/<app>-release-fresh-win-touch-appstore-1080x
 - Final App Store preview files should be 15.0 seconds, 1080x1920 portrait, H.264, 30 fps, AAC audio.
 - Keep generated captures under `local_screenshots/` or another local output folder. Do not commit raw videos.
 - Validate every final video with `ffprobe` and contact sheets before reporting success.
+- Keep this skill generic. Use placeholders such as `<app>`, `<Scheme>`, and `<bundle id>` in examples and
+  instructions; do not bake project-specific game names, bundle IDs, puzzle moves, or marketing copy into the skill.
 
 ## Workflow
 
@@ -71,6 +73,8 @@ local_screenshots/app-preview/<app>/<app>-release-fresh-win-touch-appstore-1080x
    - Use `scripts/export_app_preview.py` for simple raw-to-App-Store exports, optional touch overlays, and audio mixing.
    - For app sounds, prefer the app's bundled effects over fake system beeps.
    - If live system audio capture is unavailable, mix sounds from the app assets at event times.
+   - Verify the exported file has an audio stream, and inspect the contact sheet with sound-event timing in mind
+     so taps, gameplay actions, and final celebration sounds land on the visible moments.
 
 6. Validate:
 

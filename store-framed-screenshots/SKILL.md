@@ -24,8 +24,10 @@ Default to an English master set first. Generate localized sets only after the E
 - Use real, recognizable device hardware for the selected platform. For modern iPhone shots, include believable
   hardware cues such as Dynamic Island/camera cutout, bezels, side buttons, screen curvature, and shadow.
 - Keep device and visible screen aspect ratios physically faithful to the selected device class; never stretch, squash, or cosmetically distort the raw screenshot inside a frame.
+- Treat App Store dimensions as a hard gate: every final image must be checked at the exact accepted pixel size before handoff.
 - Respect Google Play restrictions: no misleading ranking, price, promo, testimonial, or call-to-action text; keep taglines minimal.
 - Localize overlays and raw app UI separately. Do not translate in-app UI inside a screenshot unless the user asks for a rough concept.
+- For localized framed sets, generate from the approved master with imagegen text edits; do not rebuild the layout from scratch for each language.
 - Validate every final image visually and with file dimensions before handoff.
 
 ## Default Layout Policy
@@ -101,11 +103,20 @@ Avoid default imagegen slop: warped phones, inconsistent mockups, generic purple
      imagegen in `text-localization` mode. Tell imagegen to replace only the marketing headline text with the
      translated copy while preserving the device, app UI, background, typography style, layout, shadows, and
      canvas geometry.
+   - Scope localization prompts to the external overlay text only. For device-framed screenshots, say that the
+     headline outside the phone/tablet is the only editable region and that every pixel inside the device frame,
+     including all app UI text, must remain exactly as in the source screenshot. When the same words appear both
+     in the headline and inside the device, list the in-device text that must be preserved.
    - Do not recreate localized framed screenshots with HTML/CSS, PIL, canvas, or other deterministic
      re-compositing once an English framed master has been approved, unless the user explicitly asks for a
      code-native rebuild.
    - Use localized raw app screenshots whenever possible.
    - Keep the same layout lock across locales unless text expansion forces a documented adjustment.
+   - Validate non-English glyphs visually. Reject placeholder squares, missing accents, invented characters,
+     broken CJK text, or awkward copy casing before considering a locale complete.
+   - If imagegen produces correct localized text but changes protected app/device pixels, preserve the approved
+     master by compositing only the verified imagegen text band back onto the master image, then revalidate the
+     full output dimensions and visible UI.
    - For RTL languages, mirror only when the composition benefits from native RTL flow.
 
 8. Validate:
@@ -114,6 +125,7 @@ Avoid default imagegen slop: warped phones, inconsistent mockups, generic purple
    - Realistic named-device hardware, not a generic rounded rectangle.
    - Physically believable phone/tablet and screen aspect ratio.
    - Exact headline text and no extra text.
+   - Correct locale text rendering, including diacritics, accents, CJK glyphs, and native casing.
    - Headline font size, line height, placement, and color match the approved set lock.
    - Raw UI preserved and readable.
    - Layout placement consistent across the set unless creative variation was requested.
