@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cross-Store Ratings"
+  short_description: "Report portfolio ratings and reviews from ASC and Google Play clients."
+  default_prompt: "Use $cross-store-ratings-report to produce a private cross-store ratings and reviews report for my apps using asc and the Google Play developer client, with no public-store scraping."

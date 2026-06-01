@@ -12,6 +12,9 @@ A focused collection of reusable Codex skills for product planning, delivery orc
 | Release Readiness Swarm | `release-readiness-swarm` | Advisory swarm | Assesses whether an app, feature, or build is ready to ship and returns one clear release verdict. |
 | Implementation Orchestrator | `implementation-orchestrator` | Execution orchestrator | Converts an approved plan into dependency-aware work packets, parallel execution waves, and validation gates. |
 | Store Framed Screenshots | `store-framed-screenshots` | Marketing asset workflow | Creates consistent App Store and Google Play framed screenshots from truthful raw app captures using internal imagegen. |
+| Cross-Store Ratings Report | `cross-store-ratings-report` | Store operations report | Produces private portfolio ratings/reviews reports from `asc` and the Google Play developer client, without public scraping. |
+| Computer Use Enable | `computer-use-enable` | Local tooling repair | Enables or repairs Dan's bundled Codex Computer Use plugin setup. |
+| Reddit Promo Writing | `reddit-promo-writing` | Marketing writing workflow | Drafts honest, subreddit-aware promo and feedback posts for Dan's apps from local source context. |
 
 ## Suggested Flow
 
@@ -21,6 +24,9 @@ A focused collection of reusable Codex skills for product planning, delivery orc
 4. Use `release-readiness-swarm` before shipping a build, major feature, or redesign.
 5. Use `implementation-orchestrator` after a plan has been chosen and the work should actually be executed.
 6. Use `store-framed-screenshots` when raw app screenshots need polished store-ready frames, exact dimensions, localization, and validation.
+7. Use `cross-store-ratings-report` when ratings/reviews need to be pulled from App Store Connect and Google Play developer tooling across the portfolio.
+8. Use `computer-use-enable` when Codex Computer Use is disabled or missing on Dan's Mac.
+9. Use `reddit-promo-writing` when an app needs a Reddit post, feedback request, or launch/update copy.
 
 ## Install
 
