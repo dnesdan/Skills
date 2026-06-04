@@ -1,20 +1,40 @@
 ---
 name: reddit-promo-writing
-description: Draft Reddit promo posts and comments for Dan's indie apps in a source-aware, non-spammy style. Use when asked to create, revise, localize, or adapt Reddit marketing copy, launch posts, feedback requests, subreddit-specific posts, or comment replies for Dan's apps.
+description: Draft Reddit promo posts and comments for indie apps in a source-aware, non-spammy style. Use when asked to create, revise, localize, or adapt Reddit marketing copy, launch posts, feedback requests, subreddit-specific posts, or comment replies for an app.
 ---
 
 # Reddit Promo Writing
 
-Use this skill for Reddit-facing promo copy for Dan's apps. The output should feel like an indie developer asking for useful attention, not a polished ad.
+Use this skill for Reddit-facing promo copy for apps. The output should feel like an indie developer asking for useful attention, not a polished ad.
 
-## Dan's Defaults
+## Default Voice
 
 - Voice: direct, practical, humble, specific.
 - Avoid hype, fake virality, corporate launch language, and generic AI-marketing phrasing.
-- Lead with the concrete user problem, the app's constraint, or the thing Dan built differently.
+- Lead with the concrete user problem, the app's constraint, or the thing the developer built differently.
 - Mention being the developer when relevant.
 - Czech or English depending on subreddit and user request.
 - Prefer one strong post over many broad variants unless the user asks for variants.
+
+## Posting Context
+
+Ask for or infer these when the user wants ready-to-post subreddit copy:
+
+- Reddit account/login to post from, formatted as a username such as `u/example_dev`.
+- Target subreddit names, formatted as `r/example`.
+- Whether the account is the developer's official/personal account, a company account, or another disclosed role.
+- Whether links should be included in the post body, first comment, or omitted.
+
+Example context format:
+
+```text
+Reddit login: u/example_dev
+Target subreddits: r/iosapps, r/SideProject, r/AppleWatch, r/czech
+Disclosure: I am the developer.
+Link policy: Put the App Store link in the first comment only if subreddit rules allow it.
+```
+
+Treat these as examples of shape only. Do not assume these exact subreddits, login, or disclosure unless the user provides them.
 
 ## Inputs To Gather
 
@@ -25,6 +45,7 @@ Use local evidence first:
 - release notes / recent git changes when the post is about an update
 - subreddit rules and tone when a target subreddit is named
 - previous Reddit profile/style notes if available in the current workspace or session history
+- user-provided Reddit login, target subreddits, and disclosure preference
 
 If subreddit rules or current posts are needed, browse only when the user asked for subreddit-specific posting or up-to-date fit.
 
@@ -37,12 +58,17 @@ If subreddit rules or current posts are needed, browse only when the user asked 
    - problem/solution story
    - comment reply
 2. Extract truthful product claims from source files.
-3. Pick a Reddit shape:
+3. Confirm posting context when needed:
+   - target subreddit(s)
+   - Reddit login/account identity
+   - disclosure wording
+   - link placement
+4. Pick a Reddit shape:
    - `Feedback request`: "I built X because Y; what would you change?"
    - `Build story`: short context, hard tradeoff, result, ask
    - `Useful resource`: explain the problem and include the app as the implementation
    - `Update`: what changed, why it matters, what feedback is needed
-4. Draft:
+5. Draft:
    - title options, usually 3-5
    - one main post
    - optional first comment with link/disclosure if useful
@@ -66,6 +92,11 @@ If subreddit rules or current posts are needed, browse only when the user asked 
 ```markdown
 **Subreddit Fit**
 ...
+
+**Posting Context**
+- Account: `u/...`
+- Target: `r/...`
+- Disclosure: ...
 
 **Titles**
 1. ...
