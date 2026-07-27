@@ -1,0 +1,4 @@
+interface:
+  display_name: "iOS Redesign Audit"
+  short_description: "Audit every screen for a premium native redesign."
+  default_prompt: "Use $audit-ios-app-redesign to inspect this iOS app in Simulator and return a read-only, evidence-backed redesign brief that removes AI slop and raises visual, interaction, and motion quality."
