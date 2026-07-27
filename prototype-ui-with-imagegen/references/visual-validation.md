@@ -11,6 +11,7 @@ Record:
   size, locale, and exact content state
 - repeatable navigation or launch sequence to the surface
 - baseline screenshot or recording when one exists
+- preservation map and approved native component map
 
 Capture the implementation at the same viewport, state, appearance, and content
 as the concept. Compare full screens first, then crop or zoom only where a
@@ -19,11 +20,14 @@ specific discrepancy needs inspection.
 ## Compare in this order
 
 1. Primary job, hierarchy, navigation, and action placement
-2. Content completeness, wrapping, clipping, scrolling, and safe areas
-3. Alignment, spacing rhythm, type roles, target sizes, and grouping
-4. Semantic color, materials, elevation, symbols, and custom rendering
-5. Alternate data states, themes, text sizes, locales, and adaptive windows
-6. Motion, gestures, focus, haptics, interruption, and runtime performance
+2. Preserved app shell, project components, destinations, labels, selected
+   state, symbols, brand tokens, typography roles, and materials
+3. Native component map versus the components actually implemented
+4. Content completeness, wrapping, clipping, scrolling, and safe areas
+5. Alignment, spacing rhythm, type roles, target sizes, and grouping
+6. Semantic color, materials, elevation, symbols, and custom rendering
+7. Alternate data states, themes, text sizes, locales, and adaptive windows
+8. Motion, gestures, focus, haptics, interruption, and runtime performance
 
 Do not chase raster-identical pixels when the generated concept conflicts with
 native rendering, accessibility, real content, or platform behavior. Document
@@ -46,6 +50,8 @@ Do not declare completion until:
 - the main flow and affected alternate states are exercised
 - accessibility and adaptive layout checks relevant to the change pass
 - the selected design thesis remains recognizable without shipping a raster
+- preserved project/system components remain real components rather than
+  raster-inspired replicas
 - visible regressions introduced by the rebuild are fixed or explicitly blocked
 - custom effects have a purpose, fallback, and proportionate performance check
 

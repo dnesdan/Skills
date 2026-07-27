@@ -10,10 +10,18 @@ A direction cannot win when it:
 - invents a capability, data source, derived fact, navigation destination,
   visible control, or interactive affordance
 - removes or obscures essential product content or the primary action
+- removes a visible real content module or monetization surface without
+  explicit permission
 - depends on unreadable generated text to explain the design
 - violates safe areas, clips essential content, or uses impossible geometry
 - requires shipping the generated bitmap as interactive UI
 - conflicts with the native platform's navigation or accessibility model
+- replaces an existing project or semantic platform component with a fabricated
+  lookalike, or regresses current platform chrome
+- changes preserved navigation, tabs, symbols, labels, ordering, selected
+  state, brand colors, typography roles, or materials without permission
+- lacks a credible native component map, or needs an unjustified custom
+  navigation/control primitive
 - cannot adapt to required devices, large text, or localization
 - copies distinctive third-party branding or artwork
 
@@ -31,7 +39,10 @@ user's brief explicitly allows them.
 
 ## Native platform fit
 
-- Could this be expressed with semantic SwiftUI or Compose structure?
+- Does every visible region map to an existing project component, a current
+  semantic SwiftUI/Compose component, or a justified custom native primitive?
+- Does it reuse the current navigation/tab shell rather than merely looking
+  vaguely native?
 - Are navigation, presentation, back behavior, controls, and input cues native?
 - Are system materials and effects used for function rather than costume?
 - Does the design avoid browser patterns and static mockup tricks?
@@ -73,6 +84,8 @@ usability harm.
 Identify:
 
 - reusable project components versus necessary new primitives
+- exact system/project component mapping for navigation, tabs, controls,
+  progress, charts, lists, and symbols
 - state, navigation, data, and localization changes implied
 - availability gates and fallbacks
 - likely layout, rendering, shader, battery, or performance risk

@@ -7,6 +7,9 @@ against official Android documentation and the project's actual dependencies.
 
 ## Convert image decisions into Compose
 
+Start from the approved native component map. Reuse existing composables and
+the current app shell directly; do not recreate how image generation drew them.
+
 Extract:
 
 - semantic content hierarchy and traversal order
@@ -20,6 +23,13 @@ Implement new interface work in Jetpack Compose using the project's existing
 architecture. Prefer Material components, adaptive layout APIs, semantic
 actions, system back and predictive-back behavior, and stable state ownership.
 Use Material 3 Expressive selectively rather than restyling every component.
+
+Map common surfaces to components supported by the project's actual dependency
+baseline: existing navigation/scaffold, adaptive navigation suite or panes,
+top app bar, Material buttons, menus, progress indicators, lazy lists, and
+semantic icons. Preserve current Material theming, destinations, selected
+state, and predictive-back behavior. Do not replace them with a static
+image-generated imitation.
 
 Use Canvas, `DrawScope`, AGSL, `RuntimeShader`, `RenderEffect`, blur, or custom
 graphics only for a named content or interaction purpose. Bound layers,

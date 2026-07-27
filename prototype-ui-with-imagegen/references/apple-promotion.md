@@ -7,6 +7,10 @@ project's installed Xcode SDK.
 
 ## Convert image decisions into SwiftUI
 
+Start from the approved native component map. Reuse existing project components
+and the current app shell directly; do not recreate how image generation drew
+them.
+
 Extract:
 
 - semantic content hierarchy and reading order
@@ -19,6 +23,13 @@ Extract:
 Implement new interface work in SwiftUI with the project's existing
 architecture. Prefer semantic system navigation, toolbars, tabs, search,
 presentations, controls, symbols, text styles, and gestures.
+
+Map common surfaces to current SDK-backed components when they fit: project
+navigation plus `NavigationStack`/`NavigationSplitView`, `TabView`, toolbar
+items, `Button`, `Menu`, `ShareLink`, `ProgressView`, `Chart`, semantic `Text`
+styles, and SF Symbols. Verify the exact current declarations and preserve any
+newer system presentation already used by the app. Do not regress a current
+Liquid Glass tab or toolbar to a hand-drawn flat imitation.
 
 Use Liquid Glass on a functional control layer when current system APIs and the
 design purpose support it. Do not reproduce glass by stacking arbitrary blur,

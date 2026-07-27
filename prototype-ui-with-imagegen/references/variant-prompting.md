@@ -17,6 +17,8 @@ State: <exact product state being shown>
 User job: <what the person is trying to accomplish>
 Required content: <source-backed content and verbatim copy>
 Allowed controls: <complete allowlist of confirmed actions and affordances>
+Preserved shell: <current navigation/tab/toolbar/project components and tokens>
+Native component map: <region -> existing or current platform component>
 Structure: <direction-specific hierarchy and composition>
 Visual language: <platform-native material, type, color, and depth intent>
 Interaction cues: <only interactions the real product supports>
@@ -26,7 +28,10 @@ Constraints: realistic native implementation; readable hierarchy; accessible
 Avoid: invented features or data; generic AI gradients; decorative glow;
   card soup; gratuitous glass; unrequested back, hamburger, overflow, chevron,
   tab, filter, badge, row action, or floating control; inferred weekday or
-  progress value; fake browser chrome; watermark; device frame
+  progress value; replacement or restyling of preserved project/system
+  components; fabricated or obsolete platform chrome; unapproved palette,
+  symbol, tab, or typography changes; fake browser chrome; watermark; device
+  frame
 Output: one full-size, straight-on UI screen at the specified viewport; no
   collage, comparison board, annotations, marketing scene, or tilted device
 ```
@@ -38,6 +43,16 @@ List every permitted visible control. An ordinary platform icon still implies
 behavior and must not appear unless confirmed. Represent unknown activity
 names, times, locations, values, or dates with user-approved placeholders or
 neutral non-text blocks; never manufacture realistic content.
+
+For an existing app, include the current screenshot as an edit target and say:
+
+```text
+Preserve the app shell, system chrome, tab/navigation component, labels,
+symbols, selected state, brand colors, typography roles, materials, and all
+out-of-scope content exactly in identity and behavior. Redesign only <target
+surface>. Render the proposed hierarchy using the declared native component
+map. Do not flatten, restyle, or replace current platform components.
+```
 
 ## Choose meaningful axes
 
@@ -80,6 +95,7 @@ copy, proprietary artwork, or unsupported controls from the reference.
 
 - Keep viewport, appearance, content, and UI state fixed.
 - Keep the allowed-control list fixed.
+- Keep preserved shell and project tokens fixed.
 - Use the same fidelity and full-screen framing.
 - Give each direction one dominant thesis.
 - Issue a separate built-in image-generation call per direction.

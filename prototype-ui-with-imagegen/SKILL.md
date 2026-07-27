@@ -7,7 +7,9 @@ description: >-
   user-selected direction in SwiftUI or Jetpack Compose. Use when the user asks
   for UI concepts, image-generated redesign variants, a native component or
   screen prototype, more options around a chosen concept, or implementation of
-  a selected generated direction. Keep exploration read-only and stop before
+  a selected generated direction. Preserve the app's current platform-native
+  shell, project components, symbols, and design tokens unless the user
+  explicitly puts them in scope. Keep exploration read-only and stop before
   production changes unless the user explicitly selects a variant to keep. Do
   not use for web, HTML, CSS, or generated production UI assets.
 ---
@@ -47,6 +49,12 @@ when that is safe; otherwise ask the user to narrow the target.
   background that contains controls, or a substitute for native code.
 - Do not invent product capabilities, data, navigation destinations, or copy to
   make a concept look complete.
+- Preserve current system chrome, navigation and tab structure, project
+  components, semantic colors, typography roles, symbols, and brand identity
+  unless the user explicitly authorizes changing a named item.
+- Prefer an existing project component, then a current semantic platform
+  component, then a justified custom native primitive. Never replace a native
+  or project component with a generated lookalike merely for novelty.
 - Do not claim that a still image validates motion, gestures, haptics, focus,
   accessibility, dynamic content, localization, or runtime performance.
 - Preserve unrelated user changes. Commit only when the user asked for a
@@ -71,9 +79,10 @@ Before prompting:
 4. Inspect the target source and adjacent states: loading, empty, populated,
    error, disabled, permission, keyboard, large text, dark appearance, and
    adaptive layouts as relevant.
-5. Capture or reuse a representative runtime screenshot when possible. For a
-   local screenshot, call `view_image` before passing it to built-in image
-   generation.
+5. For an existing runnable app, build or launch it and capture the exact target
+   state before the first image-generation call. Treat this runtime baseline as
+   required, not optional. For a local screenshot, call `view_image` before
+   passing it to built-in image generation.
 
 Label every input image:
 
@@ -82,8 +91,11 @@ Label every input image:
 - **Reference** when it communicates product context, composition, or style but
   genuine structural divergence is allowed.
 
-If runtime capture is blocked, continue from source evidence and label the
-concepts source-informed rather than runtime-verified.
+If runtime capture is blocked after a concrete attempt, record the command or
+tool, failure, and missing prerequisite. Source-informed exploration may
+continue, but every result remains at least `Concern`; do not declare a winner
+or enter Keep until a runtime baseline or user-provided current screenshot is
+available.
 
 ## 2. Freeze the brief
 
@@ -94,6 +106,9 @@ Write a compact brief before generation:
 - source-backed content and verbatim copy
 - an allowlist of visible controls and interactive affordances confirmed by
   source or the user
+- a **preservation map** of current system chrome, project components, symbols,
+  semantic colors, typography roles, content, and states, with every item
+  marked `Preserve` or explicitly `Allowed to change`
 - invariants that every direction must preserve
 - freedoms the concepts may explore
 - forbidden additions and known accessibility or localization constraints
@@ -108,9 +123,16 @@ decoration. Do not allow one unless source evidence or the user confirms it.
 Do not infer calendar weekdays, progress values, destinations, or other facts
 from incomplete inputs.
 
+Treat the current screenshot as an **edit target** for preserved shell, brand,
+and component identity. Layout divergence inside the target surface does not
+authorize redesigning the navigation bar, tab bar, toolbar, platform materials,
+symbols, or unrelated product modules.
+
 ## 3. Generate real alternatives
 
 Read [variant-prompting.md](references/variant-prompting.md) before generating.
+Read [native-component-gate.md](references/native-component-gate.md) and create
+a native component map for every direction before issuing its prompt.
 Classify each request as `ui-mockup`.
 
 Issue one built-in `image_gen` call per direction with a separate prompt. Do not
@@ -125,6 +147,9 @@ Give every direction:
   hierarchy, navigation model, disclosure, spatial organization, or
   interaction model
 - the shared brief and invariants
+- a mapping from every visible interactive or structural element to an existing
+  project component, a current platform component, or a justified custom native
+  primitive
 - platform, viewport, state, and output framing identical to the other
   directions so comparison remains fair
 
@@ -134,8 +159,9 @@ copy changes alone as a distinct direction.
 Inspect every result at readable size. Reject or retry once with a single
 targeted correction when a result breaks an invariant, invents functionality,
 adds an unapproved interactive affordance, has impossible geometry, clips
-essential content, or becomes unusable because of malformed text. Keep the
-original direction thesis during a correction.
+essential content, replaces a preserved native/project component, regresses
+current platform chrome, changes brand tokens, or becomes unusable because of
+malformed text. Keep the original direction thesis during a correction.
 
 ## 4. Evaluate before recommending
 
@@ -148,6 +174,7 @@ For each direction, state:
 
 - what it tests
 - what improves over the current surface
+- its native component map, including every custom primitive and justification
 - its product and accessibility tradeoffs
 - native implementation feasibility
 - likely implementation cost or risk
@@ -158,12 +185,13 @@ there is no winner and identify the smallest useful next generation pass.
 Return exactly:
 
 1. **Prototype brief**
-2. **Current evidence**
-3. **Generated directions**
-4. **Constraint comparison**
-5. **Recommendation**
-6. **What image generation did not verify**
-7. **Choose next step** — `keep <name>`, `riff <name>`, or stop
+2. **Runtime baseline**
+3. **Preservation map**
+4. **Generated directions**
+5. **Native component and constraint comparison**
+6. **Recommendation**
+7. **What image generation did not verify**
+8. **Choose next step** — `keep <name>`, `riff <name>`, or stop
 
 Then stop. Explore and Riff must not proceed into implementation.
 
@@ -171,7 +199,8 @@ Then stop. Explore and Riff must not proceed into implementation.
 
 Resolve the selected image from the current conversation or ask the user to
 reattach it. Preserve the chosen direction's successful hierarchy, product
-job, content, and platform conventions.
+job, content, native component map, project shell, brand tokens, and platform
+conventions.
 
 Generate three fresh alternatives, each changing one or two named aspects.
 Avoid cosmetic mutations. Re-run the same evaluation and output contract, then
@@ -194,7 +223,9 @@ intent. Treat the image as a design reference, not a pixel contract. Resolve
 ambiguous or generated details using the product model, native conventions,
 accessibility, and source copy.
 
-Implement with the project's existing architecture and reusable primitives.
+Implement the approved native component map with the project's existing
+architecture and reusable primitives. Reuse preserved components directly
+rather than rebuilding their generated appearance.
 Add a custom control, shader, blur, glass treatment, or transition only when it
 has a named functional purpose and a graceful accessibility and availability
 fallback.
