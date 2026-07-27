@@ -1,4 +1,4 @@
 interface:
   display_name: "Review Apple Animations"
-  short_description: "Review native Apple motion against a strict bar."
-  default_prompt: "Use $review-apple-animations to review the animation changes in this Apple app and return prioritized file-and-line findings."
+  short_description: "Review WWDC26 SwiftUI, Liquid Glass, and shaders."
+  default_prompt: "Use $review-apple-animations to review this SwiftUI diff against the WWDC 2026 baseline, including Liquid Glass, transitions, Metal shaders, accessibility, and performance."

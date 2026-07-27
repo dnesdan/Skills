@@ -1,111 +1,164 @@
 ---
 name: android-design
-description: Design, implement, or review native Android interfaces using Material guidance, adaptive layouts, accessibility, platform conventions, touch and input behavior, and purposeful motion. Use for Jetpack Compose or Android View work involving navigation, components, typography, edge-to-edge, window size classes, foldables, gestures, transitions, springs, haptics, animation performance, or an Android-native design critique. Do not use for web interfaces.
+description: Design, implement, modernize, or review native Android interfaces against the current Google I/O 2026 baseline. Use for Compose-first work involving Android 17 adaptive layouts, Material 3 Expressive, Navigation 3, shared element transitions, motion schemes, state-based Styles, non-touch input, edge-to-edge, predictive back, Compose graphics, AGSL RuntimeShader effects, accessibility, or performance. Build new UI in Jetpack Compose; treat XML layouts and the View system as maintenance or migration concerns rather than the default. Do not use for web interfaces.
 ---
 
 # Android Design
 
-Create Android interfaces that feel at home across phones, tablets, foldables, desktop windows, and varied OEM hardware. Favor platform semantics, adaptability, and useful feedback over ornamental motion.
+Build current Android UI with Jetpack Compose first, Material semantics, and adaptive behavior across every window and input mode.
 
-## Source Order
+## Currency Gate
 
-Use this order when guidance conflicts:
+Treat July 2026 as the knowledge baseline:
 
-1. Current Android Developers and Material guidance
-2. Existing app behavior, design-system tokens, and project instructions
-3. Standard Material and Compose or View components
-4. Custom behavior justified by a concrete user need
+- Google I/O 2026
+- Android 17 adaptive-first guidance
+- Compose-first UI development
+- Compose 1.11 stable from the April 2026 release
+- Material 3 1.4 stable, with newer expressive motion and Styles APIs still version-dependent or experimental
 
-This skill adapts the restraint and physical-motion ideas in Emil Kowalski's design skills to native Android APIs and platform conventions.
+Before selecting a version-dependent API, inspect the project's Compose BOM and current Android Developers release notes. Do not copy an alpha API into a stable project without explicit opt-in, an availability plan, and confirmation that the current signature still matches.
 
-## Design Principles
+Use official Android and Google sources for volatile guidance:
 
-- **Purpose:** Make the main task and primary action obvious.
-- **User control:** Keep actions reversible and avoid unnecessary confirmation.
-- **Platform familiarity:** Preserve Android navigation, back behavior, system surfaces, and component semantics.
-- **Adaptability:** Design for changing window size, posture, orientation, input, density, language, and font scale.
-- **Clarity:** Use hierarchy, containment, alignment, and plain labels to reduce cognitive load.
-- **Accessibility:** Treat semantics, target size, contrast, and alternate input as core design.
-- **Restraint:** Add motion only when it improves understanding or feedback.
+- [Android UI Development is Compose First](https://android-developers.googleblog.com/2026/05/android-ui-development-is-compose-first.html)
+- [Adaptive development — Google I/O 2026](https://android-developers.googleblog.com/2026/05/android-adaptive-development-ecosystem.html)
+- [Material Design 3 in Compose](https://developer.android.com/develop/ui/compose/designsystems/material3)
+- [Navigation 3](https://developer.android.com/guide/navigation/navigation-3)
+- [Shared element transitions](https://developer.android.com/develop/ui/compose/animation/shared-elements)
+- [Compose graphics](https://developer.android.com/develop/ui/compose/graphics/draw/overview)
 
-## Platform Fit
+## Current Baseline
 
-- Identify the actual target set: compact phone, tablet, foldable, desktop windowing, TV, Wear OS, or multiple classes.
-- Design with window size classes and panes. Reflow, reveal, or change presentation instead of stretching a phone layout.
-- Support edge-to-edge correctly with system bar, display cutout, and IME insets.
-- Keep important actions reachable without assuming one device size or grip.
-- Preserve Android system back and predictive back behavior.
-- Prefer Material components and navigation patterns before inventing custom controls.
-- Use scalable text units, test nonlinear font scaling, and avoid fixed containers that clip enlarged text.
-- Keep touch targets at least 48 dp and provide focus, keyboard, mouse, stylus, and accessibility semantics where relevant.
+- Build all new UI and all newly touched feature UI in Jetpack Compose.
+- Migrate View or XML surfaces incrementally when work enters them.
+- Use Material 3 components and theming before custom controls.
+- Model navigation with Navigation 3 for new Compose architecture when project constraints allow it.
+- Design adaptive-first for phones, foldables, tablets, desktop windows, Googlebook, connected displays, cars, TV, Wear OS, and XR as relevant.
+- Support touch, keyboard, mouse, trackpad, stylus, accessibility services, and rotary or spatial input where the target requires them.
+- Keep edge-to-edge, system bars, cutouts, IME, predictive back, and window resizing correct by construction.
 
-## Interaction
+## Material 3 Expressive
 
-- Prefer the highest-level component or modifier that fits. `Button`, `clickable`, `toggleable`, scrolling containers, and Material swipe components include behavior and semantics that raw pointer handling does not.
-- Give immediate press feedback through the component's indication and interaction state.
-- Keep dragged content synchronized with the pointer and preserve nested-scroll contracts.
-- Use touch slop, velocity, resistance, and anchors rather than brittle distance-only gesture rules.
-- Provide a visible or semantic alternative for swipe-only and drag-only actions.
-- Keep haptics causal and sparse. Trigger them at the committed state change, not as decoration.
+Use expressiveness to reinforce hierarchy and meaning, not to animate every component.
+
+- Start with Material 3 components, dynamic color, typography, shapes, and state layers.
+- Keep utilitarian and frequent interactions on the standard motion character.
+- Reserve expressive motion for prominent elements, hero transitions, and meaningful moments.
+- Use component defaults before inventing per-component springs.
+- If the project uses a Material version with `MotionScheme`, read motion through `MaterialTheme.motionScheme`.
+- Do not introduce deprecated `LocalMotionScheme`; current alpha documentation routes motion through `MaterialTheme`.
+- Treat `MotionScheme.standard()` and `MotionScheme.expressive()` as version-dependent expressive APIs and verify the current opt-in annotation.
+- Distinguish spatial specs, which change bounds or shape, from effects specs, which change color or alpha.
+- Keep dynamic color accessible and preserve brand hierarchy through semantic roles.
+- Use variable typography or shape morphing only when legibility and interaction state remain clear.
+
+## Adaptive-First Structure
+
+- Make layout decisions from the app window and current capabilities, never physical device labels alone.
+- Use `NavigationSuiteScaffold` for adaptive primary navigation.
+- Use `ListDetailPaneScaffold` and `SupportingPaneScaffold` for canonical multi-pane tasks.
+- Preserve navigation state and selected content as panes appear or collapse.
+- Support Large and Extra-large width classes when the project's adaptive library version exposes them.
+- Use Navigation 3 scenes and scene decorators for layout-owned bars, rails, dialogs, and multi-destination presentation when appropriate.
+- Consider the experimental MediaQuery API only when window size classes do not express a needed capability such as pointer precision.
+- Treat new Grid, FlexBox, and Styles APIs as experimental until the selected dependency makes them stable.
+- Never lock orientation, aspect ratio, or resizability as a substitute for an adaptive layout.
+- Test live window resizing, fold posture, desktop windowing, external displays, and configuration continuity.
+
+## Compose Components and State
+
+- Prefer semantic components such as `Button`, selection controls, Material sheets, and adaptive scaffolds.
+- Prefer high-level gesture APIs and components over raw `pointerInput`.
+- Hoist state to the lowest owner that needs coordination.
+- Keep state stable and save user-visible navigation or task state across recreation.
+- Use stable keys for lazy content, reorderable items, and shared transitions.
+- Use `AnimatedVisibility` when hidden content must leave composition and semantics.
+- Use `AnimatedContent` for a meaningful content identity change.
+- Use `animate*AsState` for one value, `updateTransition` for coordinated state, and `Animatable` for cancelable or velocity-aware motion.
+- Use current stable APIs before experimental replacements unless the user explicitly wants the new experimental path.
+
+## Navigation and Shared Transitions
+
+- Use Navigation 3 back-stack keys and `NavDisplay` for new compatible architecture.
+- Preserve predictive back and system back semantics.
+- Use `SharedTransitionLayout` with `sharedElement` only for the same conceptual content.
+- Use `sharedBounds` when the container persists but its internal content differs.
+- Use unique typed keys, consistent modifier ordering, and the correct animated visibility scope.
+- Choose `ScaleToBounds` for text where reflow during transition would be distracting; use remeasurement only when the layout relationship requires it.
+- Account for overlay, clipping, and current interoperability limitations.
+- Remove caller-managed invisible shared elements after the transition; do not leave them active in the UI or semantics tree.
 
 ## Motion
 
-Use motion for feedback, spatial continuity, state explanation, or to bridge a change that would otherwise feel abrupt.
+- Name the purpose: feedback, spatial continuity, state explanation, or a bridge over a jarring change.
+- Keep frequent actions fast and quiet.
+- Let gesture-driven motion interrupt and continue with velocity.
+- Use anchors, resistance, touch slop, and nested-scroll contracts.
+- Keep predictive back synchronized with visual progress.
+- Use Material motion specs and the current theme instead of scattering hardcoded timing constants.
+- Never delay navigation, back, or input to finish decorative motion.
+- Keep the final state correct when system animations are disabled.
 
-- Keep frequently repeated flows fast and subtle.
-- Prefer system and Material motion already provided by components.
-- Use springs for physical or interruptible changes and duration-based specs for deliberate, predetermined choreography.
-- Preserve current value and velocity when a target changes.
-- Keep enter and exit paths spatially coherent.
-- Do not delay navigation, back, or input until a decorative transition finishes.
-- Treat no animation as a valid and often preferable result.
+## Compose Graphics and Shaders
 
-### Jetpack Compose
+Use custom graphics only when the design need is not served by Material components or normal drawing.
 
-- Drive animations from explicit state and use the narrowest API that fits.
-- Use `animate*AsState` for one value, `updateTransition` for coordinated values, `AnimatedVisibility` for lifecycle-correct appearance, and `AnimatedContent` for meaningful content swaps.
-- Use `Animatable` when motion needs cancellation, retargeting, velocity, or gesture coordination.
-- Use `anchoredDraggable`, scroll, or other high-level gesture APIs before raw `pointerInput`.
-- Prefer modifier lambda and `graphicsLayer` paths when they avoid recomposition or relayout during every frame.
-- Use `animateContentSize` only when the layout change is itself the intended motion and performance has been checked.
-- Add labels to animation APIs so tooling and traces remain understandable.
+- Use `Canvas`, `DrawScope`, `drawBehind`, and `drawWithContent` for custom drawing.
+- Use `drawWithCache` only when it actually caches objects such as a brush, path, or shader; otherwise avoid the extra lambda.
+- Use `graphicsLayer` deliberately and remember that alpha, `RenderEffect`, and some compositing modes allocate an offscreen layer.
+- Use `ShaderBrush(RuntimeShader)` with AGSL for custom GPU fragment effects on Android 13 and later.
+- Use `RenderEffect` for content filtering on Android 12 and later.
+- Provide a Compose fallback for every lower API level.
+- Keep `RuntimeShader`, brushes, paths, and immutable inputs stable; update uniforms instead of rebuilding shader objects per frame.
+- Bound overdraw, offscreen buffers, blur, shadows, and shader sampling.
+- Stop or simplify continuous effects when offscreen, animation-disabled, or power-sensitive.
+- Profile release builds with Perfetto, Macrobenchmark, JankStats, and representative low- and high-refresh devices.
 
-### Android Views
+## Styles API
 
-- Prefer platform and Material transitions or `MotionLayout` when they match the interaction.
-- Use `ViewPropertyAnimator`, `ValueAnimator`, `ObjectAnimator`, or spring and fling animations according to whether the motion is predetermined or physical.
-- Make interactive transitions cancelable and continue from their visible state.
-- Avoid repeatedly forcing measure and layout during gesture-driven animation.
+Use the state-based Styles API only when the project intentionally adopts the current experimental Compose version.
 
-## Visual System
+- Use Styles for visual configuration and state-driven visual properties.
+- Keep behavior, gestures, and accessibility in modifiers and semantic components.
+- Prefer Styles when they remove recomposition from pressed, focused, hovered, or selected visual transitions.
+- Do not migrate stable production code solely to chase an experimental API.
+- Isolate the opt-in so future API changes remain local.
 
-- Use Material color roles, type scale, shapes, elevation, and state layers consistently.
-- Treat dynamic color as an input to the system, not a reason to discard brand hierarchy.
-- Use containment to group related content and actions.
-- Keep content width bounded on large windows. Change panes and component presentation rather than scaling everything up.
-- Maintain contrast across light, dark, dynamic, high-contrast, and disabled states.
-- Use icons with clear semantics and content descriptions only when they convey meaning not already expressed by nearby text.
+## Accessibility and Input
 
-## Accessibility
+- Keep touch targets at least 48 dp and text in scalable units.
+- Preserve TalkBack focus and semantics through visibility, navigation, and shared transitions.
+- Provide accessibility actions and visible alternatives for swipe-only or drag-only behavior.
+- Support focus rings and logical tab order for keyboard, mouse, and trackpad.
+- Test Remove animations, large font scale, display size, high contrast, Switch Access, and TalkBack.
+- Do not make motion, color, haptics, sound, shaders, or shape the only carrier of essential state.
 
-- Keep every essential state understandable with animation disabled.
-- Test the system's Remove animations setting and animator duration scale at zero.
-- Preserve TalkBack focus and semantics during animated visibility and content replacement.
-- Avoid leaving invisible content in the semantics tree; choose lifecycle-aware visibility when content should disappear.
-- Do not communicate only through motion, color, sound, or haptics.
-- Test TalkBack, Switch Access, keyboard navigation, large font scale, display size, and high contrast where relevant.
+## Reject Legacy-First Solutions
+
+Do not introduce these as the preferred solution for new UI:
+
+- XML layout files or new View hierarchies
+- `RecyclerView` for a new Compose feature
+- Navigation 2 when a new architecture can adopt Navigation 3
+- fixed phone-only breakpoints or device-name checks
+- orientation and resizability restrictions
+- new custom components that duplicate Material 3
+- manually coordinated shared transitions when current Compose APIs fit
+- per-frame object allocation or broad recomposition for visual effects
+- experimental APIs presented as stable
 
 ## Workflow
 
-1. Identify framework, target form factors, Android versions, navigation model, and primary user task.
-2. Read project instructions and inspect theme, component system, insets, adaptive layout, existing motion, and accessibility.
-3. Describe the current hierarchy and interaction before proposing changes.
-4. Choose a standard component or platform behavior when it already solves the problem.
-5. For custom motion, state purpose, frequency, trigger, path, interruption behavior, disabled-animation behavior, and performance risk.
-6. Implement only when asked; otherwise return a critique or implementation-ready recommendation.
-7. Validate with Compose Preview or layout inspection, emulator coverage, and representative real hardware.
-8. Test compact and expanded widths, fold or resize transitions, gesture and three-button navigation, font scale, TalkBack, dark theme, and animation-disabled mode.
+1. Inspect the Compose BOM, Material version, Android target, min SDK, navigation version, and current architecture.
+2. Verify version-dependent APIs against current official documentation.
+3. Build semantic Compose content and adaptive pane behavior before visual customization.
+4. Adopt Material 3 Expressive selectively and keep standard interactions restrained.
+5. Add motion or shaders only with a named purpose, API fallback, and accessibility outcome.
+6. Implement only when requested; otherwise return a critique or implementation-ready plan.
+7. Validate previews and screenshot tests, then run on phones, foldables, resizable desktop windows, and representative hardware.
+8. Measure jank, input behavior, back navigation, state restoration, accessibility, and GPU effects in release builds.
 
 ## Output
 
-Lead with the strongest design decision or highest-impact issue. Cite concrete composables, views, and `file:line` evidence when reviewing code. Separate Android convention issues, adaptive-layout risks, accessibility, motion quality, and optional polish. Prefer deleting weak custom behavior over adding more motion.
+Lead with the Compose-first, adaptive decision. Cite `file:line` evidence. Label stable, beta, and experimental APIs. Separate required modernization, Material and adaptive correctness, motion and shader quality, accessibility, performance, and optional polish.

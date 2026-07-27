@@ -1,4 +1,4 @@
 interface:
   display_name: "Find Apple Animation Opportunities"
-  short_description: "Find high-value native Apple motion opportunities."
-  default_prompt: "Use $find-apple-animation-opportunities to inspect this Apple app and report only motion opportunities that genuinely improve it."
+  short_description: "Find current WWDC26 SwiftUI motion opportunities."
+  default_prompt: "Use $find-apple-animation-opportunities to inspect this SwiftUI app against the WWDC 2026 baseline and report only high-value Liquid Glass, transition, motion, or shader opportunities."

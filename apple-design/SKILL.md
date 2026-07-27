@@ -1,111 +1,162 @@
 ---
 name: apple-design
-description: Design, implement, or review native Apple-platform interfaces with Apple Human Interface Guidelines, platform conventions, accessibility, adaptive layout, direct manipulation, and fluid motion. Use for SwiftUI, UIKit, AppKit, watchOS, tvOS, or visionOS work involving navigation, controls, typography, materials, gestures, transitions, springs, haptics, reduced motion, or an Apple-native design critique. Do not use for web interfaces.
+description: Design, implement, modernize, or review native Apple interfaces against the current WWDC 2026 and 2027-platform baseline. Use for SwiftUI-first work involving Liquid Glass, modern navigation and toolbars, resizable layouts, Observation, gestures, spring and navigation transitions, Metal-backed SwiftUI shaders, custom graphics, SF Symbols, haptics, accessibility, or Apple-platform design critique. Prefer Xcode 27 and current SwiftUI APIs for new code; treat UIKit, AppKit, storyboards, and older patterns as migration or interoperability concerns rather than the default. Do not use for web interfaces.
 ---
 
 # Apple Design
 
-Create interfaces that feel native to the Apple platform they run on. Favor clarity, directness, continuity, and system behavior over decorative imitation.
+Build current Apple-platform interfaces with SwiftUI first. Use the system's design and behavior before creating a custom imitation.
 
-## Source Order
+## Currency Gate
 
-Use this order when guidance conflicts:
+Treat July 2026 as the knowledge baseline:
 
-1. The current platform's Human Interface Guidelines and SDK documentation
-2. Existing app behavior, design-system tokens, and project instructions
-3. Standard SwiftUI, UIKit, AppKit, or other platform components
-4. Custom behavior justified by a concrete user need
+- WWDC26 and Xcode 27
+- the 2027 Apple platform releases
+- refreshed Liquid Glass
+- the June 2026 Human Interface Guidelines and SwiftUI updates
 
-Treat upstream design-engineering advice as a lens, not a substitute for current Apple guidance. This skill is informed by Apple's Human Interface Guidelines, *Designing Fluid Interfaces* (WWDC18), and Emil Kowalski's `apple-design` skill, adapted for native Apple development.
+Before using a beta or availability-gated API, verify its current declaration in Apple Developer documentation and the SDK installed in the project. Beta signatures can change. If a project supports older systems, keep the modern architecture and add the narrowest availability fallback; do not make the fallback the primary design.
+
+Use only official Apple sources for volatile platform guidance:
+
+- [Design principles](https://developer.apple.com/design/human-interface-guidelines/design-principles)
+- [Materials](https://developer.apple.com/design/human-interface-guidelines/materials)
+- [Motion](https://developer.apple.com/design/human-interface-guidelines/motion)
+- [SwiftUI updates](https://developer.apple.com/documentation/updates/swiftui)
+- [What's new in SwiftUI — WWDC26](https://developer.apple.com/videos/play/wwdc2026/269/)
+- [Compose advanced graphics effects with SwiftUI — WWDC26](https://developer.apple.com/videos/play/wwdc2026/322/)
+
+## Current Baseline
+
+- Build new interface work in SwiftUI.
+- Use Observation (`@Observable`, `@State`, `@Environment`, `@Bindable`) for new models and data flow.
+- Use `NavigationStack` and `NavigationSplitView`.
+- Design for arbitrary window sizes. Use size classes, adaptive containers, and content-driven layout rather than device checks or screen bounds.
+- Exercise layouts with Xcode 27 resizable previews and on every supported platform.
+- Use semantic system controls, toolbars, tabs, presentations, symbols, text styles, and gestures before custom replacements.
+- Keep UIKit or AppKit only for a framework capability SwiftUI does not expose, a deliberate interoperability boundary, or incremental modernization.
 
 ## Design Principles
 
-Use these principles to make tradeoffs:
+Apply Apple's current principles:
 
-- **Purpose:** Make the primary task and next action obvious. Remove elements that do not help.
-- **Agency:** Keep people in control. Make actions reversible and reserve confirmation for genuinely destructive consequences.
-- **Familiarity:** Use platform conventions and standard components unless a tested alternative is better.
-- **Flexibility:** Support different devices, window sizes, orientations, input methods, languages, and abilities.
-- **Simplicity:** Show the common path first without hiding information people need to decide.
-- **Craft:** Treat typography, alignment, motion, sound, haptics, and wording as one system.
-- **Delight:** Earn delight through responsiveness and care; do not attach spectacle to routine work.
+- **Purpose:** Make something meaningful and focus the experience on what matters.
+- **Agency:** Keep people in control and make actions reversible.
+- **Responsibility:** Protect privacy, safety, attention, and trust.
+- **Familiarity:** Use conventions people already understand.
+- **Flexibility:** Support different people, contexts, inputs, platforms, and window sizes.
+- **Simplicity:** Include what is necessary; simplicity is not visual emptiness.
+- **Craft:** Make every visual, interaction, motion, sound, and word intentional.
+- **Delight:** Let delight emerge from the other principles instead of attaching spectacle.
 
-## Platform Fit
+## Liquid Glass
 
-- Identify the exact target: iOS, iPadOS, macOS, watchOS, tvOS, or visionOS. Do not flatten their conventions into a generic Apple look.
-- Prefer standard navigation, presentation, controls, symbols, materials, menus, focus behavior, and gestures.
-- Preserve content hierarchy across size changes, but change presentation when the platform calls for it. A sheet on iPhone may become a persistent inspector or secondary column on iPad or macOS.
-- Respect safe areas, keyboard avoidance, pointer and keyboard input, multitasking, rotation, and window resizing.
-- Use system fonts and text styles by default. Support Dynamic Type and test the largest accessibility sizes.
-- Use SF Symbols semantically and keep symbol rendering, weight, and animation consistent with nearby text and controls.
+Treat Liquid Glass as a functional control layer over content.
 
-## Interaction
+- Let standard SwiftUI navigation, toolbar, tab, search, menu, and control surfaces adopt Liquid Glass automatically.
+- Do not add glass to the content layer merely for decoration. Content cards and static content usually remain flat.
+- Use custom glass sparingly for important floating controls that need separation from content.
+- Use `.buttonStyle(.glass)` or `.buttonStyle(.glassProminent)` for buttons. Do not place a raw `glassEffect` behind a button.
+- Use `buttonBorderShape(_:)` to shape glass buttons.
+- Apply `.glassEffect(...)` after layout and appearance modifiers.
+- Use `.interactive()` only for a surface that actually responds to direct interaction.
+- Use `.regular` by default. Use `.clear` only over visually rich content where legibility remains strong.
+- Group related effects in `GlassEffectContainer`; use `glassEffectID` and a namespace only for a real hierarchy-changing morph.
+- Keep toolbar glass supplied by the system. Use `sharedBackgroundVisibility(_:)` or `contentMarginsRemoved(_:)` only when the item semantics justify separating it from the shared group.
+- Honor the system Liquid Glass tint preference, inactive-window appearance, Reduce Transparency, and Increase Contrast.
+- Rebuild with Xcode 27 before customizing: the refreshed 2027 appearance is adopted automatically.
 
-- Give immediate feedback when contact begins and commit an action when the interaction completes.
-- Keep dragged content attached to the gesture in the same coordinate space. Preserve the grab offset.
-- Allow cancellation where the system convention allows it; do not trap people in a transition.
-- Prefer system gesture recognizers and components before custom recognizers.
-- Keep alternate access available for gesture-only actions, including VoiceOver actions, keyboard commands, menus, or visible controls.
-- Use haptics and sound only for meaningful events. Align them with the visual state change and never make them the only feedback.
+## Resizable Structure and Toolbars
 
-## Motion
+- Assume iPhone, iPad, and Mac windows can resize continuously.
+- Use horizontal and vertical size classes and adaptive containers instead of idiom branches.
+- Keep primary actions visible as space shrinks with `visibilityPriority(_:)`.
+- Move secondary actions into `ToolbarOverflowMenu`.
+- Use `topBarPinnedTrailing` only for an action that must remain anchored.
+- Use `toolbarMinimizeBehavior(_:for:)` when more content space during scrolling improves the task.
+- Use the prominent tab role only for a genuinely distinct, important destination or action.
+- Preserve state and focus while a one-pane presentation becomes multi-pane.
+- Avoid fixed frames, fixed orientation assumptions, and custom toolbar backgrounds.
 
-Add motion only when it provides feedback, preserves spatial context, explains a state change, or prevents a disorienting jump.
+## Motion and Interaction
 
-- Keep routine interactions brief and restrained.
-- Let people interrupt and reverse gesture-driven motion.
-- Continue from the visible state and current velocity when retargeting.
-- Use a spring for physical, interactive movement. Avoid bounce unless the gesture or product character earns it.
-- Enter and exit along a coherent path. Anchor a transition to its source when that relationship helps understanding.
-- Keep navigation and system component motion familiar. Do not replace a platform transition merely to make the app look distinctive.
-- Never block input solely because an animation is running.
+Add motion only for feedback, spatial continuity, state explanation, or a transition that would otherwise disorient.
 
-### SwiftUI
+- Keep direct manipulation attached to the gesture and preserve velocity at release.
+- Let gesture-driven motion interrupt, reverse, and retarget from the visible state.
+- Prefer modern SwiftUI animation presets such as `.smooth`, `.snappy`, `.bouncy`, and `spring(duration:bounce:)`; choose by behavior, not novelty.
+- Use `withAnimation` for a bounded mutation and `.animation(_:value:)` for an explicit dependency.
+- Use `PhaseAnimator` or `KeyframeAnimator` only for noninteractive choreography.
+- Use `matchedGeometryEffect` for shared identity within a hierarchy.
+- Use system navigation transitions and `matchedTransitionSource` where available; do not implement a custom `NavigationTransition` conformance when the SDK exposes only framework-provided transitions.
+- Use `Transaction` to prevent inherited animation from moving unrelated state.
+- Never block input solely to finish an animation.
+- Pair visual, haptic, and audio feedback at the committed event.
 
-- Drive motion from explicit state.
-- Use `withAnimation` for a bounded state change and `.animation(_:value:)` only when the dependency is clear.
-- Use `spring` or `interactiveSpring` for retargetable physical motion.
-- Use `PhaseAnimator` or `KeyframeAnimator` only for noninteractive sequences that genuinely need choreography.
-- Use `matchedGeometryEffect` only when two views represent the same conceptual object and the identity remains understandable.
-- Pair insertion and removal transitions deliberately; verify interrupted and rapidly repeated state changes.
-- Use `Transaction` to disable or replace inherited animation where motion would be misleading.
+## SwiftUI Graphics, Metal, and Shaders
 
-### UIKit and AppKit
+Use custom graphics when they serve content or interaction and system effects cannot express the result.
 
-- Prefer interruptible property animators for interactive transitions.
-- Connect transition progress to the gesture continuously.
-- Seed continuation with current progress and velocity instead of restarting from a model target.
-- Read the presentation state when necessary to prevent jumps during interruption.
-- Keep custom transition controllers cancelable and test both completion and reversal.
+- Decompose the design into a pipeline of data, layout, drawing, shader, and time stages.
+- Use SwiftUI drawing and layout first: `Canvas`, `Shape`, `visualEffect`, alignment guides, and drawing modifiers.
+- Use `ShaderLibrary` with stitchable Metal functions for GPU effects.
+- Choose the narrowest shader:
+  - `colorEffect` for per-pixel color transformation
+  - `distortionEffect` for position remapping
+  - `layerEffect` only when sampling neighboring pixels or the rendered layer
+- Declare an accurate `maxSampleOffset`; an incorrect bound can clip output or waste work.
+- Treat shaders as stateless. Drive intentional animation with `TimelineView(.animation)` or explicit state and pass only the needed uniforms.
+- Keep shader creation, textures, and immutable inputs stable; do not rebuild expensive resources every frame.
+- Pause or simplify continuous effects when offscreen, inactive, Low Power Mode is relevant, or Reduce Motion is enabled.
+- Provide a nonshader or static fallback when availability, accessibility, energy, or performance requires it.
+- Use direct Metal only when SwiftUI shader effects, Canvas, and system frameworks cannot meet the rendering requirement. Check Metal feature support instead of assuming one GPU family.
+- Profile with Instruments and Metal tools on representative hardware.
 
-## Materials, Depth, and Typography
+## Modern SwiftUI State and Performance
 
-- Use system materials to express layering and focus, not as decoration.
-- Avoid stacking translucent surfaces until text and controls lose contrast.
-- Pair elevation, dimming, scale, and material changes with a clear hierarchy.
-- Keep text legible over changing content and honor Increase Contrast and Reduce Transparency.
-- Build hierarchy with semantic text styles, weight, spacing, and placement. Do not encode hierarchy with size alone.
-- Let text expansion reflow the layout. Do not truncate essential actions or values at accessibility sizes.
+- Keep view identity stable and prefer concrete view types or `@ContentBuilder` over `AnyView` on update-heavy paths.
+- Preserve simple show/hide identity when insertion and removal are unnecessary.
+- Use stable identifiers for lists, reordering, shared transitions, and drag-and-drop.
+- Prefer the new reorderable container APIs and swipe actions on arbitrary container content where their availability matches the project.
+- Use lazy containers for large collections and measure before adding custom caching.
+- Keep expensive work out of `body`, drawing callbacks, gesture updates, and per-frame timelines.
+- Use the Xcode SwiftUI performance instruments and validate release builds.
 
 ## Accessibility
 
-- Read `accessibilityReduceMotion` in SwiftUI or the equivalent platform setting for custom motion.
-- Under reduced motion, preserve meaning with a restrained dissolve, highlight, or direct state change; remove large movement, parallax, and unnecessary spring effects.
-- Honor Reduce Transparency, Increase Contrast, Differentiate Without Color, VoiceOver, Switch Control, Full Keyboard Access, and Dynamic Type where applicable.
-- Keep interactive targets at least as large as the current platform guidance requires.
-- Never use motion, color, sound, or haptics as the only carrier of essential information.
+- Read `accessibilityReduceMotion` for custom movement and shader animation.
+- Preserve meaning with a static state, restrained dissolve, text, symbol, or control state.
+- Honor Reduce Transparency, Increase Contrast, Differentiate Without Color, Dynamic Type, VoiceOver, Switch Control, and Full Keyboard Access.
+- Keep VoiceOver focus stable during transitions and glass morphs.
+- Provide alternatives to gesture-only actions.
+- Do not make motion, glass, shaders, color, sound, or haptics the only carrier of essential information.
+
+## Reject Legacy-First Solutions
+
+Do not introduce these as the preferred solution for new UI:
+
+- storyboards or XIB-authored screens
+- `NavigationView`
+- broad implicit `.animation` without a value dependency
+- device-idiom or `UIScreen`-bounds layout
+- manual blur stacks that imitate Liquid Glass
+- custom toolbar chrome that replaces current SwiftUI toolbars
+- `ObservableObject` architecture when Observation fits
+- display-link plumbing when `TimelineView`, SwiftUI animation, or a framework timeline fits
+- new View Controller or AppKit view hierarchies without a documented SwiftUI gap
 
 ## Workflow
 
-1. Identify platform, framework, device classes, input methods, and the user's primary task.
-2. Read project instructions and inspect the existing design system, navigation, components, motion, and accessibility support.
-3. Describe the current hierarchy and interaction before proposing changes.
-4. Prefer a standard platform component or transition when it satisfies the need.
-5. For custom motion, state its purpose, trigger, path, interruption behavior, reduced-motion behavior, and performance risk.
-6. Implement only when the user asked for changes; otherwise return a critique or implementation-ready recommendation.
-7. Validate in previews or a simulator, then on representative hardware for gestures, haptics, performance, and platform feel.
-8. Test light and dark appearance, text scaling, reduced motion, rotation or resizing, and rapid repeated interaction.
+1. Inspect the project SDK, deployment targets, Swift language mode, framework mix, and existing design system.
+2. Verify volatile APIs against the installed Xcode 27 SDK and current Apple documentation.
+3. Build the semantic SwiftUI hierarchy and adaptive behavior before styling.
+4. Let system controls adopt Liquid Glass before adding custom glass.
+5. Add motion or shaders only with a named purpose and a reduced-motion outcome.
+6. Implement only when requested; otherwise return a critique or implementation-ready plan.
+7. Build and test in resizable previews, Simulator, and representative hardware.
+8. Validate accessibility, performance, energy, interruption, resizing, inactive windows, and older-system fallbacks.
 
 ## Output
 
-Lead with the strongest design decision or highest-impact issue. Cite concrete views and `file:line` evidence when reviewing code. Separate platform violations, usability risks, motion polish, and optional refinements. Avoid prescribing a custom animation when the system behavior is already the better design.
+Lead with the current-platform decision. Cite `file:line` evidence when reviewing code. Label beta or experimental API explicitly. Separate required modernization, Liquid Glass correctness, adaptive layout, motion and shader quality, accessibility, and optional polish.

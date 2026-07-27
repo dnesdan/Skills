@@ -1,75 +1,76 @@
 ---
 name: review-android-animations
-description: Review native Android animation and gesture code against a strict bar for purpose, Material and platform fit, physical continuity, interruption, adaptive behavior, accessibility, and runtime performance. Use for Jetpack Compose or Android View diffs and explicit file scopes when asked to review, audit, or approve existing motion. Read-only by default; do not use to find missing animation opportunities or review unrelated code.
+description: Review Compose motion, Material 3 Expressive behavior, Navigation 3 and shared transitions, adaptive pane continuity, state-based Styles, AGSL RuntimeShader graphics, gestures, and haptics against the current Google I/O 2026 baseline. Use for Android 17-era diffs or explicit file scopes when asked to audit or approve motion, graphics, predictive back, accessibility, lifecycle, or runtime performance. Treat new XML/View animation and older navigation patterns as modernization findings unless a documented migration constraint requires them. Read-only by default.
 ---
 
 # Review Android Animations
 
-Review motion and only the code directly required for its correctness. Treat platform behavior, accessibility, and runtime feel as release criteria.
+Review current Compose motion and graphics as product behavior, not decoration. Approval requires dependency-aware API use, adaptive correctness, accessibility, and measured release performance.
 
-Read [references/standards.md](references/standards.md) before issuing findings that depend on API selection, gesture behavior, adaptive layout, semantics, or performance.
+Read [references/standards.md](references/standards.md) before issuing findings.
+
+## Currency Gate
+
+Use the Google I/O 2026 baseline. Inspect the Compose BOM, Material version, Android target and minimum, Navigation version, and experimental opt-ins. Never present an alpha API as stable or approve a deprecated access path because it still compiles.
 
 ## Scope
 
-- Remain read-only unless the user separately requests fixes.
-- Prefer the current diff; otherwise use the explicit files or components in scope.
-- Include animation state, navigation, gestures, haptics, semantics, and adaptive behavior coupled to the motion.
-- Ignore unrelated style or architecture unless it directly causes a motion issue.
+- Remain read-only unless fixes are separately requested.
+- Prefer the current diff; otherwise use the explicit files or components.
+- Include Compose state, Material motion, Navigation 3, shared transitions, adaptive scaffolds, gestures, graphics, shaders, semantics, lifecycle, and performance coupled to motion.
+- Ignore unrelated code unless it directly causes the issue.
 - Use `find-android-animation-opportunities` for missing motion.
 
 ## Review Process
 
-1. Read project instructions and identify Compose or View system, Android versions, design tokens, form factors, and navigation mode.
-2. Map each changed animation to its trigger, state transition, item identity, frequency, and user purpose.
-3. Inspect interruption, coroutine cancellation, rapid retargeting, gesture ownership, nested scroll, back, and predictive back.
-4. Inspect Remove animations behavior, TalkBack semantics, focus, and alternate input.
-5. Check recomposition, layout, draw work, allocations, and invalidation on every frame.
-6. Exercise compact and expanded layouts or run focused tests when source does not prove behavior.
-7. Report only actionable findings introduced or exposed by the reviewed scope.
+1. Record dependency versions, API stability, min SDK, architecture, and form factors.
+2. Map each effect to trigger, conceptual identity, frequency, source, destination, and Material or system alternative.
+3. Check `MaterialTheme.motionScheme`, expressive versus standard character, component defaults, and experimental opt-ins.
+4. Check Navigation 3, shared keys, modifier order, overlays, predictive back, adaptive pane changes, interruption, and cancellation.
+5. For graphics, verify drawing API, AGSL or RenderEffect availability, caching, uniforms, fallback, overdraw, and offscreen layers.
+6. Check Remove animations, TalkBack focus and semantics, alternate input, and configuration continuity.
+7. Run the smallest relevant release build, Macrobenchmark, Perfetto trace, or device exercise when source cannot prove behavior.
+8. Report only actionable findings caused or exposed by the reviewed scope.
 
 ## Non-Negotiable Standards
 
-Flag a finding when motion:
+Raise a finding when the change:
 
-1. Has no clear user-facing purpose.
-2. Slows a frequent action, navigation, or back behavior.
-3. Fights Material or Android component behavior without a user need.
-4. Jumps, restarts, loses velocity, or ignores anchors during an interruptible gesture.
-5. Delays input, cancellation, or state commitment until decorative motion finishes.
-6. Uses unstable Lazy item identity, mismatched transition state, or competing animation owners.
-7. Breaks predictive back, window resizing, fold transitions, insets, or pane continuity.
-8. Leaves hidden content in semantics, moves TalkBack focus unexpectedly, or communicates essential state only through motion.
-9. Has no valid animation-disabled outcome.
-10. Performs avoidable recomposition, measure, layout, allocation, or rendering work every frame and risks jank.
-
-Do not demand custom timings or easing when Material defaults, app tokens, and runtime behavior are already correct.
+1. Uses motion, expressive styling, or a shader without a user-facing purpose.
+2. Applies expressive motion to recurring utilitarian interactions instead of standard Material behavior.
+3. Uses a deprecated motion access path, scatters hardcoded specs, or mislabels an experimental API as stable.
+4. Breaks Navigation 3 state, predictive back, shared identity, modifier order, overlay, or semantics.
+5. Restarts, jumps, loses velocity, ignores anchors, or delays input during an interruptible gesture.
+6. Breaks pane continuity, resizing, insets, fold posture, focus, or non-touch input.
+7. Introduces new XML/View animation, Navigation 2, or phone-only assumptions without a documented migration constraint.
+8. Recreates shaders, brushes, paths, or effects per frame; uses an unavailable API without fallback; or creates unbounded offscreen work.
+9. Leaves invisible content focusable or has no usable animation-disabled outcome.
+10. Risks measurable jank, memory growth, thermal load, or input latency.
 
 ## Severity
 
-- **Blocker:** broken navigation or gesture completion, inaccessible essential state, crash, or unrecoverable input state.
-- **High:** visible jump, lost velocity, broken back behavior, hidden focusable content, repeated jank, or no usable animation-disabled state.
-- **Medium:** unjustified motion, poor Android fit, excessive frequency, wrong API ownership, adaptive-layout risk, or avoidable performance cost.
-- **Low:** localized polish issue with a concrete user-visible effect.
+- **Blocker:** broken navigation or state, inaccessible essential information, crash, invalid API availability, trapped input, or runaway work.
+- **High:** visible jump, broken predictive back, hidden focusable content, no animation-disabled outcome, severe frame/GPU risk, or new legacy-first architecture.
+- **Medium:** unjustified expressiveness, wrong API family, adaptive defect, unstable identity, avoidable energy cost, or weak Material fit.
+- **Low:** localized polish issue with concrete user impact.
 
 ## Required Output
 
 ### Findings
 
-List findings from highest severity to lowest:
-
-| Severity | Location | Evidence | User impact | Native recommendation |
+| Severity | Location | Current-platform evidence | User impact | Compose-native recommendation |
 | --- | --- | --- | --- | --- |
 
-Cite `file:line`, state the failure mode, and give the smallest correction direction. Do not write a patch unless requested.
+Cite `file:line`, dependency and API stability, and the smallest correction direction. Do not write a patch unless asked.
 
-If no findings remain, write `No animation findings.` and state what runtime behavior was not verified.
+If there are no findings, write `No animation findings.` and state unverified devices, refresh rates, GPU effects, or experimental behavior.
 
 ### Verdict
 
 Choose exactly one:
 
-- **Block** — at least one blocker or high-severity motion regression
-- **Request changes** — actionable medium or low issues remain
-- **Approve** — no actionable findings in scope
+- **Block**
+- **Request changes**
+- **Approve**
 
-End with the reviewed scope, checks performed, and residual risk in one short paragraph.
+Close with scope, dependency baseline, checks performed, and residual risk.

@@ -1,4 +1,4 @@
 interface:
   display_name: "Find Android Animation Opportunities"
-  short_description: "Find high-value native Android motion opportunities."
-  default_prompt: "Use $find-android-animation-opportunities to inspect this Android app and report only motion opportunities that genuinely improve it."
+  short_description: "Find current I/O 2026 Compose motion opportunities."
+  default_prompt: "Use $find-android-animation-opportunities to inspect this Compose app against the Google I/O 2026 baseline and report only high-value Material, adaptive, shared-transition, or shader opportunities."

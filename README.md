@@ -1,6 +1,6 @@
 # Skills
 
-A focused collection of reusable Codex skills for product planning, delivery orchestration, native Apple and Android design, animation review, store screenshot production, redesign evaluation, and release readiness.
+A focused collection of reusable Codex skills for product planning, delivery orchestration, current WWDC 2026 Apple and Google I/O 2026 Android design, animation review, store screenshot production, redesign evaluation, and release readiness.
 
 ## Included Skills
 
@@ -15,12 +15,12 @@ A focused collection of reusable Codex skills for product planning, delivery orc
 | Cross-Store Ratings Report | `cross-store-ratings-report` | Store operations report | Produces private portfolio ratings/reviews reports from `asc` and the Google Play developer client, without public scraping. |
 | Computer Use Enable | `computer-use-enable` | Local tooling repair | Enables or repairs Dan's bundled Codex Computer Use plugin setup. |
 | Reddit Promo Writing | `reddit-promo-writing` | Marketing writing workflow | Drafts honest, subreddit-aware promo and feedback posts for Dan's apps from local source context. |
-| Apple Design | `apple-design` | Native design guidance | Designs and reviews native Apple interfaces, interaction, accessibility, and fluid motion. |
-| Android Design | `android-design` | Native design guidance | Designs and reviews adaptive Android interfaces, interaction, accessibility, and motion. |
-| Find Apple Animation Opportunities | `find-apple-animation-opportunities` | Read-only motion discovery | Finds a restrained set of high-value motion opportunities in native Apple apps. |
-| Find Android Animation Opportunities | `find-android-animation-opportunities` | Read-only motion discovery | Finds a restrained set of high-value motion opportunities in native Android apps. |
-| Review Apple Animations | `review-apple-animations` | Read-only motion review | Reviews existing native Apple motion for purpose, physical continuity, accessibility, and performance. |
-| Review Android Animations | `review-android-animations` | Read-only motion review | Reviews existing native Android motion for Material fit, gesture continuity, accessibility, and performance. |
+| Apple Design | `apple-design` | Current native design guidance | Applies the WWDC 2026 baseline with Xcode 27, current SwiftUI, Liquid Glass, adaptive layout, Metal shaders, and accessibility. |
+| Android Design | `android-design` | Current native design guidance | Applies the Google I/O 2026 Compose-first baseline with Android 17 adaptive UI, Material 3 Expressive, Navigation 3, AGSL, and accessibility. |
+| Find Apple Animation Opportunities | `find-apple-animation-opportunities` | Read-only motion discovery | Finds restrained SwiftUI, Liquid Glass, transition, and shader opportunities using the WWDC 2026 baseline. |
+| Find Android Animation Opportunities | `find-android-animation-opportunities` | Read-only motion discovery | Finds restrained Compose, Material, adaptive, shared-transition, and shader opportunities using the I/O 2026 baseline. |
+| Review Apple Animations | `review-apple-animations` | Read-only motion review | Reviews SwiftUI motion, Liquid Glass, Metal shaders, accessibility, energy, and performance against WWDC 2026. |
+| Review Android Animations | `review-android-animations` | Read-only motion review | Reviews Compose motion, Material 3 Expressive, Navigation 3, AGSL, accessibility, and performance against I/O 2026. |
 
 ## Suggested Flow
 
@@ -52,5 +52,7 @@ Each skill is self-contained:
 
 - Advisory swarms stay read-only and converge on one synthesized recommendation.
 - The orchestrator separates planning from execution and enforces explicit file ownership.
+- Apple UI guidance is SwiftUI-first and current to WWDC 2026; Android UI guidance is Compose-first and current to Google I/O 2026.
+- Legacy UIKit/AppKit and Android View technologies are treated as migration or narrow interoperability concerns, not defaults for new UI.
 - Motion discovery and review stay platform-native and do not prescribe browser styling or animation APIs.
 - Skills are intentionally narrow so the main agent can compose them without mixing incompatible goals.

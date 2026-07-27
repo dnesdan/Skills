@@ -1,101 +1,110 @@
-# Native Android Animation Standards
+# Google I/O 2026 Android Motion and Graphics Standards
 
-Use this reference for precise Compose and View-system review. Reuse app motion tokens and Material defaults unless evidence justifies a custom spec.
+Use this reference for Compose-first review on the Android 17 adaptive baseline.
 
 ## Contents
 
-1. Purpose and frequency
-2. API ownership
-3. Gestures and navigation
-4. Adaptive behavior
-5. Accessibility and semantics
-6. Performance
-7. Validation
-8. Escalation checks
+1. Source and dependency baseline
+2. Material 3 Expressive
+3. Compose motion ownership
+4. Navigation 3 and shared transitions
+5. Adaptive behavior and input
+6. Compose graphics and AGSL
+7. Accessibility and lifecycle
+8. Performance and modernization
 
-## Purpose and Frequency
+## Source and Dependency Baseline
 
-Accept motion that gives feedback, preserves spatial context, clarifies a state transition, or prevents an abrupt change. Reserve ornamental or celebratory motion for rare, product-appropriate moments.
+Verify volatile claims against:
 
-Do not add custom spectacle to standard controls, routine navigation, back, frequent list work, or keyboard-driven actions.
+- [Compose First](https://android-developers.googleblog.com/2026/05/android-ui-development-is-compose-first.html)
+- [Adaptive development — Google I/O 2026](https://android-developers.googleblog.com/2026/05/android-adaptive-development-ecosystem.html)
+- [Material 3 in Compose](https://developer.android.com/develop/ui/compose/designsystems/material3)
+- [Navigation 3](https://developer.android.com/guide/navigation/navigation-3)
+- [Shared element transitions](https://developer.android.com/develop/ui/compose/animation/shared-elements)
+- [Compose graphics](https://developer.android.com/develop/ui/compose/graphics/draw/overview)
 
-## API Ownership
+Read the Compose BOM and library versions from the project. Compose 1.11 is the April 2026 stable baseline, but Material expressive motion and Styles APIs remain version-dependent. Isolate experimental opt-ins and never infer availability from memory.
 
-### Jetpack Compose
+## Material 3 Expressive
+
+- Start with Material 3 components and theme roles.
+- Keep recurring utilitarian interaction on standard motion.
+- Reserve expressive motion for prominent elements and hero interactions.
+- Use component defaults before custom specs.
+- Read motion from `MaterialTheme.motionScheme` when the selected Material version exposes it.
+- Reject deprecated `LocalMotionScheme`.
+- Verify the current `ExperimentalMaterial3ExpressiveApi` requirement.
+- Use spatial specs for bounds or shape and effects specs for color or alpha.
+- Keep dynamic color, expressive shapes, and variable typography legible and semantic.
+- Avoid assigning expressive behavior to an entire app without a frequency and product-character review.
+
+## Compose Motion Ownership
 
 - Use `animate*AsState` for one state-derived value.
-- Use `updateTransition` when multiple properties belong to one state transition.
+- Use `updateTransition` for coordinated values owned by one state machine.
 - Use `AnimatedVisibility` when hidden content must leave composition and semantics.
-- Use `AnimatedContent` only when content identity and direction are clear.
-- Use `Animatable` for cancellation, retargeting, velocity, or gesture coordination.
-- Use `anchoredDraggable`, scroll, swipe, and Material components before raw `pointerInput`.
-- Add stable keys to animated lazy items.
-- Avoid two animation APIs writing the same property.
-- Ensure coroutines are scoped to the owning state and cancel cleanly.
-- Give animation APIs meaningful labels for tooling.
+- Use `AnimatedContent` for a meaningful content identity change.
+- Use `Animatable` for cancellation, retargeting, velocity, and gesture coordination.
+- Use `anchoredDraggable` and high-level gestures before raw pointer handling.
+- Keep one owner per animated property.
+- Keep stable keys for lazy content, reordering, and shared transitions.
+- Use theme or component specs instead of scattered hardcoded timing.
+- Ensure coroutine work cancels when its owner leaves composition.
 
-### Android Views
+## Navigation 3 and Shared Transitions
 
-- Use platform or Material transitions when they match the component.
-- Use property animation for predetermined changes and spring or fling behavior for physical motion.
-- Use `MotionLayout` for coordinated state transitions only when its ownership is clearer than imperative animators.
-- Avoid multiple animators competing over one property.
-- Cancel or retarget animations when a view detaches or state changes.
+- Prefer Navigation 3 for new compatible Compose architecture.
+- Keep back-stack entries uniquely keyed and state-restorable.
+- Synchronize predictive back with visual progress.
+- Use `SharedTransitionLayout` at a hierarchy level containing both endpoints.
+- Use `sharedElement` only for the same conceptual content.
+- Use `sharedBounds` for a container whose internal content changes.
+- Use typed unique keys and consistent modifier ordering.
+- Account for overlay, clipping, and z-order.
+- Choose `ScaleToBounds` for text where reflow would distract; remeasure only when geometry requires it.
+- Respect current interoperability limitations.
+- Remove caller-managed invisible shared elements after transition completion so they do not remain active or focusable.
 
-## Gestures and Navigation
+## Adaptive Behavior and Input
 
-- Keep pointer movement and content movement synchronized.
-- Respect touch slop, direction locking, nested scroll, resistance, anchors, and velocity thresholds.
-- Preserve velocity across drag release and retargeting.
-- Keep gestures cancelable and provide an alternate action.
-- Do not delay state commitment merely to finish decoration.
-- Integrate custom navigation motion with system back and predictive back.
-- Test both gesture and three-button navigation.
+- Use `NavigationSuiteScaffold`, `ListDetailPaneScaffold`, and `SupportingPaneScaffold` when their canonical behavior fits.
+- Preserve selected item, navigation state, focus, and scroll position as pane count changes.
+- Handle Large and Extra-large classes when supported by the selected adaptive library.
+- Keep animation endpoints valid during live resize, fold posture changes, external displays, and density or font changes.
+- Respect edge-to-edge, system bars, display cutouts, and IME insets throughout motion.
+- Support keyboard, mouse, trackpad, stylus, focus rings, and accessibility input.
+- Treat MediaQuery, Grid, FlexBox, and Styles as experimental until the project's dependencies say otherwise.
 
-## Adaptive Behavior
+## Compose Graphics and AGSL
 
-- Keep motion valid while the window resizes or a fold posture changes.
-- Animate pane continuity only when it helps orientation; do not drag phone-only geometry across expanded layouts.
-- Respect edge-to-edge insets, display cutouts, system bars, and the IME throughout the transition.
-- Avoid hardcoded distances derived from one device size.
-- Preserve item and pane identity when presentation changes.
+- Use `Canvas`, `DrawScope`, `drawBehind`, and `drawWithContent` for custom drawing.
+- Use `drawWithCache` only when caching actual objects.
+- Keep brushes, paths, shaders, textures, and immutable inputs stable.
+- Use `ShaderBrush(RuntimeShader)` with AGSL only on Android 13 and later.
+- Use `RenderEffect` only on Android 12 and later.
+- Provide a lower-API Compose fallback.
+- Update uniforms instead of reconstructing the shader every frame.
+- Bound sampling, overdraw, blur, shadows, and offscreen compositing.
+- Remember that alpha, RenderEffect, and some compositing modes create offscreen layers.
+- Stop or simplify continuous graphics when offscreen, animation-disabled, or power-sensitive.
+- Keep information-dense content and controls legible.
 
-## Accessibility and Semantics
+## Accessibility and Lifecycle
 
-- Provide a coherent final state when system animations are removed or animator duration scale is zero.
-- Ensure hidden content leaves semantics when it is no longer available.
-- Keep TalkBack focus stable through visibility and content changes.
-- Do not require a swipe or drag without an accessibility action or visible alternative.
-- Keep essential state independent of motion, color, sound, and haptics.
-- Test large font and display size so animated bounds do not clip content.
+- Keep the final state correct when Remove animations or animator duration scale disables motion.
+- Ensure invisible content leaves semantics.
+- Preserve TalkBack focus through content swaps, navigation, pane changes, and shared transitions.
+- Provide accessibility actions and visible alternatives for gestures.
+- Test large text, display scaling, high contrast, Switch Access, keyboard, and trackpad.
+- Never rely only on motion, color, shape, shader output, sound, or haptics.
+- Cancel animation and graphics work when composition or lifecycle ownership ends.
 
-## Performance
+## Performance and Modernization
 
-- Prefer draw-phase work where equivalent behavior does not require recomposition or layout.
-- Use modifier lambdas and `graphicsLayer` appropriately to defer reads and bound invalidation.
-- Treat layout animation as legitimate when layout is the purpose, but profile it in large or nested hierarchies.
-- Avoid per-frame allocation, state publication, image work, unbounded blur, and broad recomposition.
-- Keep lazy-list item identity stable.
-- Use Macrobenchmark, system tracing, Compose animation tooling, and frame timing when risk is material.
-- Validate on a representative lower-performance device, not only a desktop emulator.
-
-## Validation
-
-- Exercise initial entry, exit, interruption, reversal, rapid repetition, cancellation, process or lifecycle changes, and navigation back.
-- Test compact and expanded widths, orientation, fold or resize, edge-to-edge, and IME appearance.
-- Test Remove animations, TalkBack, Switch Access, keyboard, mouse, large fonts, dark theme, and dynamic color.
-- Inspect slow motion or frame by frame for origin, coordinated properties, dropped frames, and gesture handoff.
-
-## Escalation Checks
-
-Raise a finding when any answer is yes:
-
-- Can back or predictive back disagree with the visual state?
-- Can cancellation leave the model and screen in different states?
-- Can a coroutine or animator outlive its owner?
-- Can rapid targets make motion restart or jump?
-- Can invisible content remain focusable?
-- Can a lazy item animate with the wrong identity?
-- Can window resizing or insets invalidate the path?
-- Does the animation perform expensive composition, layout, or drawing each frame?
-- Is custom motion replacing correct Material behavior without a user benefit?
+- Avoid per-frame allocation, broad recomposition, repeated measure/layout, and unnecessary offscreen buffers.
+- Prefer draw- or layout-phase APIs when they safely avoid composition work.
+- Measure release builds with Perfetto, Macrobenchmark, JankStats, and devices covering low and high refresh rates.
+- Test rapid retargeting, cancellation, predictive back, resize, fold, background, foreground, and process recreation.
+- Raise modernization findings for newly touched XML/View UI, new `RecyclerView`, Navigation 2 in a new architecture, fixed device checks, orientation locks, or manual transitions replaced by current Compose APIs.
+- Do not require a risky big-bang migration; define the smallest Compose boundary that prevents new legacy code.

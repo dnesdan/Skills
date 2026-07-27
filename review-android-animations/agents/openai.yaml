@@ -1,4 +1,4 @@
 interface:
   display_name: "Review Android Animations"
-  short_description: "Review native Android motion against a strict bar."
-  default_prompt: "Use $review-android-animations to review the animation changes in this Android app and return prioritized file-and-line findings."
+  short_description: "Review I/O 2026 Compose, Material motion, and shaders."
+  default_prompt: "Use $review-android-animations to review this Compose diff against the Google I/O 2026 baseline, including Material 3 Expressive, Navigation 3, adaptive motion, AGSL, accessibility, and performance."
