@@ -24,12 +24,17 @@ architecture. Prefer Material components, adaptive layout APIs, semantic
 actions, system back and predictive-back behavior, and stable state ownership.
 Use Material 3 Expressive selectively rather than restyling every component.
 
-Map common surfaces to components supported by the project's actual dependency
-baseline: existing navigation/scaffold, adaptive navigation suite or panes,
-top app bar, Material buttons, menus, progress indicators, lazy lists, and
-semantic icons. Preserve current Material theming, destinations, selected
-state, and predictive-back behavior. Do not replace them with a static
-image-generated imitation.
+For System-native, map common surfaces to components supported by the project's
+actual dependency baseline: existing navigation/scaffold, adaptive navigation
+suite or panes, top app bar, Material buttons, menus, progress indicators, lazy
+lists, and semantic icons.
+
+For Hybrid-native or Custom-native, implement approved original visuals with
+real composables, custom `Layout`, modifiers, `Canvas`/`DrawScope`, AGSL,
+`RuntimeShader`, or native graphics. Preserve navigation state, predictive back,
+semantics, focus, input, adaptive behavior, and accessibility unless the shell
+is explicitly in scope. A custom visual control must retain correct roles,
+state descriptions, actions, target sizes, and animation-disabled fallbacks.
 
 Use Canvas, `DrawScope`, AGSL, `RuntimeShader`, `RenderEffect`, blur, or custom
 graphics only for a named content or interaction purpose. Bound layers,

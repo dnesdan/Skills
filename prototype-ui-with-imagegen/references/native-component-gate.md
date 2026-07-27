@@ -2,61 +2,82 @@
 
 Create this map before prompting and verify it again after generation.
 
-## Resolution order
+## Select the strategy
 
-Map every visible structural or interactive element in this order:
+Use one strategy per direction:
 
-1. **Existing project component** — reuse its behavior, identity, states, and
-   tokens.
-2. **Current semantic platform component** — use the installed SDK and the
-   applicable `apple-design` or `android-design` skill.
-3. **Custom native primitive** — allow only when the first two cannot express a
-   named product or interaction need.
+- **System-native:** resolve in order: existing project component, current
+  semantic platform component, then a narrowly justified custom primitive.
+- **Hybrid-native:** preserve shell and standard interaction behavior; freely
+  propose custom native content components where they create meaningful product
+  hierarchy or identity.
+- **Custom-native:** permit an original native visual system, custom layouts,
+  drawing, shaders, transitions, and styled controls throughout the approved
+  scope. Preserve native semantics, state, input, accessibility, adaptation,
+  and platform integration.
 
-Never use image generation to visually replace a component whose behavior and
-identity already exist in code.
+Custom-native does not mean avoiding all system APIs. Reuse system behavior and
+infrastructure where they are invisible or beneficial; customize the visual and
+interaction layer only where the design thesis calls for it.
+
+## Select shell scope
+
+- **Preserve shell:** keep top-level navigation, tabs/navigation suite,
+  destinations, labels, ordering, selected state, back behavior, and
+  out-of-scope brand identity.
+- **Redesign shell:** allow a new native shell only when the user explicitly
+  placed it in scope. Map all destinations and behaviors, including back,
+  restoration, deep links, accessibility, and adaptive presentation.
+
+Never infer Redesign shell from Custom-native.
 
 ## Component map
 
 Record one row for every visible region:
 
-| Region | Current source/component | Proposed native component | Preserve/change | Custom justification |
-| --- | --- | --- | --- | --- |
-| App shell | `<source symbol>` | same project component | Preserve | — |
-| Primary action | `<source symbol>` | `<platform control>` | Preserve behavior | — |
-| Content visualization | `<source symbol>` | `<platform API or custom>` | Allowed to change | `<why native APIs do not fit>` |
+| Region | Current source/component | Strategy | Proposed native component | Preserve/change | Native contract |
+| --- | --- | --- | --- | --- | --- |
+| App shell | `<source symbol>` | `<strategy>` | same project component | Preserve | existing behavior |
+| Primary action | `<source symbol>` | `<strategy>` | `<system or custom native>` | `<scope>` | semantics + state |
+| Content visualization | `<source symbol>` | `<strategy>` | `<platform API or custom>` | Allowed to change | adaptation + fallback |
 
 Include navigation, tabs or navigation suite, toolbars/top app bar, sheets,
 lists, buttons, menus, progress, charts, search, input, symbols/icons,
 materials, and custom drawing when visible.
 
-## Preserve by default
+## Preserve product truth by default
 
 Unless the user explicitly names them as redesign targets, preserve:
 
 - navigation destinations, back behavior, tab destinations, labels, ordering,
   and selected state
-- the current system navigation/tab/toolbar presentation
-- existing project components and their interaction semantics
-- brand and semantic colors, typography roles, symbols, assets, and materials
+- the current shell presentation when shell scope is Preserve
+- existing product behavior and interaction semantics
+- brand identity unless the user includes visual identity in scope
 - all visible real content modules, actions, states, and monetization surfaces
 
-Changing layout hierarchy does not authorize changing the app shell or removing
-content.
+System-native also preserves project component identity by default.
+Hybrid-native and Custom-native may replace the visual construction of
+in-scope components, but not their product behavior or data without permission.
 
 ## Custom-native budget
 
-A custom primitive must include:
+A custom primitive in Hybrid-native or Custom-native must include:
 
-- the product or interaction need that system/project components cannot meet
+- the design thesis and why custom treatment adds product value
+- the native implementation approach: SwiftUI/Compose view, Layout, Canvas,
+  shader, Metal/AGSL, style, or other platform-native primitive
 - semantic and accessibility behavior
 - adaptive and localization behavior
 - reduced-motion or animation-disabled behavior when animated
 - availability and performance fallback
 
-Custom navigation, tabs, standard buttons, toggles, fields, menus, or
-presentations are a hard failure unless the user explicitly requires behavior
-the platform component cannot provide.
+Custom visual styling of buttons, progress, charts, cards, and content controls
+is allowed in Hybrid-native and Custom-native. Preserve their correct semantics,
+state, focus, target size, and input behavior.
+
+Custom navigation, tabs, fields, menus, toggles, or presentations require
+Redesign shell or explicit component scope plus a complete behavior contract.
 
 ## Post-generation gate
 
@@ -64,12 +85,14 @@ Inspect the raster rather than trusting the prompt. Fail a literal direction
 when it:
 
 - replaces current platform chrome with a flat, generic, fabricated, or
-  obsolete-looking imitation
+  obsolete-looking imitation while shell scope is Preserve
 - changes project symbols, tab icons, labels, ordering, accent, type roles, or
-  materials without permission
+  materials outside the approved strategy and scope
 - drops or invents a visible content module or control
 - cannot be mapped to the declared native components
-- makes a custom visualization carry navigation or core control behavior
+- uses a raster-only effect with no credible native implementation
+- loses semantics, accessibility, adaptation, state, or input behavior in the
+  name of custom visuals
 
 A structurally promising failed direction may be riffed after restoring the
-preserved shell and component identity. It cannot win as rendered.
+preserved contract. It cannot win as rendered.

@@ -12,6 +12,7 @@ Record:
 - repeatable navigation or launch sequence to the surface
 - baseline screenshot or recording when one exists
 - preservation map and approved native component map
+- selected component strategy and shell scope
 
 Capture the implementation at the same viewport, state, appearance, and content
 as the concept. Compare full screens first, then crop or zoom only where a
@@ -20,8 +21,8 @@ specific discrepancy needs inspection.
 ## Compare in this order
 
 1. Primary job, hierarchy, navigation, and action placement
-2. Preserved app shell, project components, destinations, labels, selected
-   state, symbols, brand tokens, typography roles, and materials
+2. Preserved contract: shell, destinations, product behavior, content, tokens,
+   and any project components marked Preserve
 3. Native component map versus the components actually implemented
 4. Content completeness, wrapping, clipping, scrolling, and safe areas
 5. Alignment, spacing rhythm, type roles, target sizes, and grouping
@@ -52,6 +53,8 @@ Do not declare completion until:
 - the selected design thesis remains recognizable without shipping a raster
 - preserved project/system components remain real components rather than
   raster-inspired replicas
+- Hybrid-native and Custom-native visuals are real native primitives with
+  verified semantics and fallbacks rather than static imitations
 - visible regressions introduced by the rebuild are fixed or explicitly blocked
 - custom effects have a purpose, fallback, and proportionate performance check
 

@@ -16,8 +16,8 @@ A direction cannot win when it:
 - violates safe areas, clips essential content, or uses impossible geometry
 - requires shipping the generated bitmap as interactive UI
 - conflicts with the native platform's navigation or accessibility model
-- replaces an existing project or semantic platform component with a fabricated
-  lookalike, or regresses current platform chrome
+- violates the declared System-native, Hybrid-native, or Custom-native strategy
+- replaces preserved platform chrome with a fabricated lookalike
 - changes preserved navigation, tabs, symbols, labels, ordering, selected
   state, brand colors, typography roles, or materials without permission
 - lacks a credible native component map, or needs an unjustified custom
@@ -41,11 +41,15 @@ user's brief explicitly allows them.
 
 - Does every visible region map to an existing project component, a current
   semantic SwiftUI/Compose component, or a justified custom native primitive?
-- Does it reuse the current navigation/tab shell rather than merely looking
-  vaguely native?
+- Does it follow the selected component strategy and shell scope?
 - Are navigation, presentation, back behavior, controls, and input cues native?
 - Are system materials and effects used for function rather than costume?
 - Does the design avoid browser patterns and static mockup tricks?
+
+Do not penalize a direction merely because it uses custom native components.
+For Hybrid-native and Custom-native, judge whether the custom treatment is
+meaningfully ownable, natively implementable, semantically complete, adaptive,
+accessible, and worth its complexity.
 
 ## Visual craft
 
@@ -86,6 +90,8 @@ Identify:
 - reusable project components versus necessary new primitives
 - exact system/project component mapping for navigation, tabs, controls,
   progress, charts, lists, and symbols
+- custom SwiftUI/Compose primitives, rendering path, behavior contract, and
+  fallback required by Hybrid-native or Custom-native
 - state, navigation, data, and localization changes implied
 - availability gates and fallbacks
 - likely layout, rendering, shader, battery, or performance risk

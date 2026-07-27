@@ -15,10 +15,12 @@ Input images: <Image 1: edit target or reference, as applicable>
 Platform: <OS, native framework, device or adaptive window class>
 State: <exact product state being shown>
 User job: <what the person is trying to accomplish>
+Component strategy: <system-native, hybrid-native, or custom-native>
+Shell scope: <preserve or redesign>
 Required content: <source-backed content and verbatim copy>
 Allowed controls: <complete allowlist of confirmed actions and affordances>
-Preserved shell: <current navigation/tab/toolbar/project components and tokens>
-Native component map: <region -> existing or current platform component>
+Preserved contract: <shell, product behavior, content, and protected tokens>
+Native component map: <region -> existing, system, or custom native component>
 Structure: <direction-specific hierarchy and composition>
 Visual language: <platform-native material, type, color, and depth intent>
 Interaction cues: <only interactions the real product supports>
@@ -28,10 +30,10 @@ Constraints: realistic native implementation; readable hierarchy; accessible
 Avoid: invented features or data; generic AI gradients; decorative glow;
   card soup; gratuitous glass; unrequested back, hamburger, overflow, chevron,
   tab, filter, badge, row action, or floating control; inferred weekday or
-  progress value; replacement or restyling of preserved project/system
-  components; fabricated or obsolete platform chrome; unapproved palette,
-  symbol, tab, or typography changes; fake browser chrome; watermark; device
-  frame
+  progress value; violation of selected strategy or shell scope; fabricated or
+  obsolete preserved platform chrome; unapproved palette, symbol, tab, or
+  typography changes; raster-only controls; fake browser chrome; watermark;
+  device frame
 Output: one full-size, straight-on UI screen at the specified viewport; no
   collage, comparison board, annotations, marketing scene, or tilted device
 ```
@@ -44,14 +46,33 @@ behavior and must not appear unless confirmed. Represent unknown activity
 names, times, locations, values, or dates with user-approved placeholders or
 neutral non-text blocks; never manufacture realistic content.
 
-For an existing app, include the current screenshot as an edit target and say:
+For an existing app, include the current screenshot as an edit target for the
+preserved contract.
+
+For **System-native**, add:
 
 ```text
-Preserve the app shell, system chrome, tab/navigation component, labels,
-symbols, selected state, brand colors, typography roles, materials, and all
-out-of-scope content exactly in identity and behavior. Redesign only <target
-surface>. Render the proposed hierarchy using the declared native component
-map. Do not flatten, restyle, or replace current platform components.
+Use existing project components and current semantic platform components first.
+Preserve their identity and behavior. Add a custom primitive only when required
+by the named design thesis.
+```
+
+For **Hybrid-native**, add:
+
+```text
+Preserve the native app shell and product behavior. Create an ownable custom
+native treatment for the in-scope content using implementable SwiftUI/Compose
+views, layouts, drawing, or effects. Do not merely restyle stock cards.
+```
+
+For **Custom-native**, add:
+
+```text
+Create a genuinely original native visual system inside the approved scope.
+Custom layouts, components, drawing, shaders, materials, and transitions are
+welcome when implementable in SwiftUI/Compose. Preserve the product model,
+content, semantics, accessibility, adaptation, and shell scope. Do not imitate
+web UI or rely on raster-only controls.
 ```
 
 ## Choose meaningful axes
@@ -95,7 +116,8 @@ copy, proprietary artwork, or unsupported controls from the reference.
 
 - Keep viewport, appearance, content, and UI state fixed.
 - Keep the allowed-control list fixed.
-- Keep preserved shell and project tokens fixed.
+- Keep every item in the preserved contract fixed.
+- Make the three default strategies visibly and structurally distinct.
 - Use the same fidelity and full-screen framing.
 - Give each direction one dominant thesis.
 - Issue a separate built-in image-generation call per direction.

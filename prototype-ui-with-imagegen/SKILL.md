@@ -7,11 +7,13 @@ description: >-
   user-selected direction in SwiftUI or Jetpack Compose. Use when the user asks
   for UI concepts, image-generated redesign variants, a native component or
   screen prototype, more options around a chosen concept, or implementation of
-  a selected generated direction. Preserve the app's current platform-native
-  shell, project components, symbols, and design tokens unless the user
-  explicitly puts them in scope. Keep exploration read-only and stop before
-  production changes unless the user explicitly selects a variant to keep. Do
-  not use for web, HTML, CSS, or generated production UI assets.
+  a selected generated direction. Support system-native, hybrid-native, and
+  custom-native visual strategies while preserving product behavior,
+  accessibility, and native implementation. Preserve the app shell, project
+  components, symbols, and design tokens unless the user explicitly puts them
+  in scope. Keep exploration read-only and stop before production changes
+  unless the user explicitly selects a variant to keep. Do not use for web,
+  HTML, CSS, or generated production UI assets.
 ---
 
 # Prototype Native UI with Image Generation
@@ -37,6 +39,39 @@ Treat one component, screen, state, or short coherent flow as one run. If the
 request spans many surfaces, select the highest-value representative surface
 when that is safe; otherwise ask the user to narrow the target.
 
+Resolve two independent design axes before exploration:
+
+### Component strategy
+
+- **System-native** — maximize reuse of current project and semantic platform
+  components. Use for conservative, familiar, or low-risk requests.
+- **Hybrid-native** — preserve the system shell and interaction behavior while
+  allowing custom native content components and visualizations.
+- **Custom-native** — allow an original visual language and custom SwiftUI or
+  Compose primitives inside the approved scope. Keep native semantics,
+  accessibility, adaptation, input behavior, and runtime implementation.
+
+If the user explicitly asks for system, standard, custom, ownable, bespoke,
+radical, or non-system visuals, apply the matching strategy to every direction.
+Otherwise create a deliberate portfolio:
+
+- three directions: one System-native, one Hybrid-native, one Custom-native
+- five directions: one System-native, two Hybrid-native, two Custom-native
+
+Every direction must still differ in hierarchy or interaction thesis; component
+strategy alone is not sufficient divergence.
+
+### Shell scope
+
+- **Preserve shell** — default; keep navigation/tab destinations, behavior,
+  labels, selected state, and out-of-scope project identity.
+- **Redesign shell** — only when the user explicitly includes navigation, tabs,
+  top-level structure, or the whole app shell in scope.
+
+Component strategy does not imply shell scope. A Custom-native content surface
+still preserves the app shell unless the user explicitly authorizes changing
+it.
+
 ## Enforce hard boundaries
 
 - Use Codex's built-in `image_gen` path by default. Do not require Claude,
@@ -52,9 +87,11 @@ when that is safe; otherwise ask the user to narrow the target.
 - Preserve current system chrome, navigation and tab structure, project
   components, semantic colors, typography roles, symbols, and brand identity
   unless the user explicitly authorizes changing a named item.
-- Prefer an existing project component, then a current semantic platform
-  component, then a justified custom native primitive. Never replace a native
-  or project component with a generated lookalike merely for novelty.
+- Follow the selected component strategy. Do not require a stock system
+  component in Hybrid-native or Custom-native when a real native custom
+  primitive better expresses the approved design thesis.
+- Never confuse Custom-native with raster UI, web styling, or behaviorless
+  imitation. Every custom element needs a credible native implementation map.
 - Do not claim that a still image validates motion, gestures, haptics, focus,
   accessibility, dynamic content, localization, or runtime performance.
 - Preserve unrelated user changes. Commit only when the user asked for a
@@ -109,6 +146,7 @@ Write a compact brief before generation:
 - a **preservation map** of current system chrome, project components, symbols,
   semantic colors, typography roles, content, and states, with every item
   marked `Preserve` or explicitly `Allowed to change`
+- selected component strategy and shell scope for each direction
 - invariants that every direction must preserve
 - freedoms the concepts may explore
 - forbidden additions and known accessibility or localization constraints
@@ -123,10 +161,10 @@ decoration. Do not allow one unless source evidence or the user confirms it.
 Do not infer calendar weekdays, progress values, destinations, or other facts
 from incomplete inputs.
 
-Treat the current screenshot as an **edit target** for preserved shell, brand,
-and component identity. Layout divergence inside the target surface does not
-authorize redesigning the navigation bar, tab bar, toolbar, platform materials,
-symbols, or unrelated product modules.
+Treat the current screenshot as an **edit target** for everything marked
+`Preserve`. Treat areas marked `Allowed to change` as reference context.
+Layout divergence inside the target surface does not authorize redesigning the
+shell or unrelated modules.
 
 ## 3. Generate real alternatives
 
@@ -143,6 +181,7 @@ Give every direction:
 
 - a memorable neutral name
 - one primary design thesis
+- its component strategy and shell scope
 - at least one meaningful axis of divergence such as layout, density,
   hierarchy, navigation model, disclosure, spatial organization, or
   interaction model
@@ -159,9 +198,10 @@ copy changes alone as a distinct direction.
 Inspect every result at readable size. Reject or retry once with a single
 targeted correction when a result breaks an invariant, invents functionality,
 adds an unapproved interactive affordance, has impossible geometry, clips
-essential content, replaces a preserved native/project component, regresses
-current platform chrome, changes brand tokens, or becomes unusable because of
-malformed text. Keep the original direction thesis during a correction.
+essential content, violates its component strategy or preservation map,
+regresses preserved platform chrome, changes protected brand tokens, or becomes
+unusable because of malformed text. Keep the original direction thesis during
+a correction.
 
 ## 4. Evaluate before recommending
 
@@ -174,6 +214,7 @@ For each direction, state:
 
 - what it tests
 - what improves over the current surface
+- its component strategy and shell scope
 - its native component map, including every custom primitive and justification
 - its product and accessibility tradeoffs
 - native implementation feasibility
@@ -199,8 +240,8 @@ Then stop. Explore and Riff must not proceed into implementation.
 
 Resolve the selected image from the current conversation or ask the user to
 reattach it. Preserve the chosen direction's successful hierarchy, product
-job, content, native component map, project shell, brand tokens, and platform
-conventions.
+job, content, component strategy, shell scope, native component map, protected
+brand tokens, and platform behavior.
 
 Generate three fresh alternatives, each changing one or two named aspects.
 Avoid cosmetic mutations. Re-run the same evaluation and output contract, then
@@ -224,8 +265,9 @@ ambiguous or generated details using the product model, native conventions,
 accessibility, and source copy.
 
 Implement the approved native component map with the project's existing
-architecture and reusable primitives. Reuse preserved components directly
-rather than rebuilding their generated appearance.
+architecture. Reuse preserved components directly. Implement approved custom
+elements as real SwiftUI or Compose primitives rather than rebuilding the
+raster literally.
 Add a custom control, shader, blur, glass treatment, or transition only when it
 has a named functional purpose and a graceful accessibility and availability
 fallback.
