@@ -1,4 +1,0 @@
-interface:
-  display_name: "Redesign Swarm"
-  short_description: "Explore redesign directions and recommend one."
-  default_prompt: "Use $redesign-swarm to evaluate this surface with four redesign lanes and return 2-4 redesign directions plus one recommendation."

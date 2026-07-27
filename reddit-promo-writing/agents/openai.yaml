@@ -1,4 +1,0 @@
-interface:
-  display_name: "Reddit Promo Writing"
-  short_description: "Draft source-aware, non-spammy Reddit posts for apps."
-  default_prompt: "Use $reddit-promo-writing to draft a Reddit post for an app from local app metadata and repo context, with honest developer disclosure, target subreddit context, account/login context, and subreddit-aware tone."

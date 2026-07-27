@@ -1,4 +1,0 @@
-interface:
-  display_name: "Enable Computer Use"
-  short_description: "Repair Codex Computer Use plugin setup."
-  default_prompt: "Use $computer-use-enable to inspect Codex config, install and enable the bundled Computer Use plugin if needed, and verify what still requires a Codex restart."

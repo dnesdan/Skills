@@ -1,4 +1,0 @@
-interface:
-  display_name: "Store Framed Screenshots"
-  short_description: "Create consistent App Store and Google Play screenshot sets"
-  default_prompt: "Use $store-framed-screenshots to plan, generate, and review a consistent framed screenshot set from raw app screenshots, preserving real app UI and correct device proportions."

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Release Readiness Swarm"
-  short_description: "Assess whether a build is ready to ship."
-  default_prompt: "Use $release-readiness-swarm to assess this app or build with four release lanes and return one release verdict plus prioritized blockers and caveats."
