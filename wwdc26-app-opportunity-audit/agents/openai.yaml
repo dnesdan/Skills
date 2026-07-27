@@ -1,0 +1,4 @@
+interface:
+  display_name: "WWDC26 App Opportunity Audit"
+  short_description: "Audit Apple apps for current system and AI opportunities."
+  default_prompt: "Use $wwdc26-app-opportunity-audit to inspect this app, verify current WWDC 2026 APIs, and rank Apple AI and platform opportunities with evidence and next validation steps."

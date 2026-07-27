@@ -1,0 +1,4 @@
+interface:
+  display_name: "Google I/O 26 App Opportunity Audit"
+  short_description: "Audit Android apps for current system and AI opportunities."
+  default_prompt: "Use $google-io26-app-opportunity-audit to inspect this app, verify current Google I/O 2026 APIs, and rank Android AI and platform opportunities with evidence and next validation steps."
