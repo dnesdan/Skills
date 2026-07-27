@@ -1,0 +1,6 @@
+interface:
+  display_name: "Imagegen UI Prototypes"
+  short_description: "Explore native UI directions with Codex images"
+  default_prompt: "Use $prototype-ui-with-imagegen to create three genuinely different native UI directions, compare them against my constraints, and stop before changing production code."
+policy:
+  allow_implicit_invocation: false
