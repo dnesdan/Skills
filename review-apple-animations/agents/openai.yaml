@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Apple Animations"
+  short_description: "Review native Apple motion against a strict bar."
+  default_prompt: "Use $review-apple-animations to review the animation changes in this Apple app and return prioritized file-and-line findings."

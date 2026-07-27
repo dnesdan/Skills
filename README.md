@@ -1,6 +1,6 @@
 # Skills
 
-A focused collection of reusable Codex skills for product planning, delivery orchestration, store screenshot production, redesign evaluation, and release readiness.
+A focused collection of reusable Codex skills for product planning, delivery orchestration, native Apple and Android design, animation review, store screenshot production, redesign evaluation, and release readiness.
 
 ## Included Skills
 
@@ -15,6 +15,12 @@ A focused collection of reusable Codex skills for product planning, delivery orc
 | Cross-Store Ratings Report | `cross-store-ratings-report` | Store operations report | Produces private portfolio ratings/reviews reports from `asc` and the Google Play developer client, without public scraping. |
 | Computer Use Enable | `computer-use-enable` | Local tooling repair | Enables or repairs Dan's bundled Codex Computer Use plugin setup. |
 | Reddit Promo Writing | `reddit-promo-writing` | Marketing writing workflow | Drafts honest, subreddit-aware promo and feedback posts for Dan's apps from local source context. |
+| Apple Design | `apple-design` | Native design guidance | Designs and reviews native Apple interfaces, interaction, accessibility, and fluid motion. |
+| Android Design | `android-design` | Native design guidance | Designs and reviews adaptive Android interfaces, interaction, accessibility, and motion. |
+| Find Apple Animation Opportunities | `find-apple-animation-opportunities` | Read-only motion discovery | Finds a restrained set of high-value motion opportunities in native Apple apps. |
+| Find Android Animation Opportunities | `find-android-animation-opportunities` | Read-only motion discovery | Finds a restrained set of high-value motion opportunities in native Android apps. |
+| Review Apple Animations | `review-apple-animations` | Read-only motion review | Reviews existing native Apple motion for purpose, physical continuity, accessibility, and performance. |
+| Review Android Animations | `review-android-animations` | Read-only motion review | Reviews existing native Android motion for Material fit, gesture continuity, accessibility, and performance. |
 
 ## Suggested Flow
 
@@ -27,6 +33,9 @@ A focused collection of reusable Codex skills for product planning, delivery orc
 7. Use `cross-store-ratings-report` when ratings/reviews need to be pulled from App Store Connect and Google Play developer tooling across the portfolio.
 8. Use `computer-use-enable` when Codex Computer Use is disabled or missing on Dan's Mac.
 9. Use `reddit-promo-writing` when an app needs a Reddit post, feedback request, or launch/update copy.
+10. Use `apple-design` or `android-design` when designing, implementing, or critiquing a native interface.
+11. Use the platform-specific `find-*-animation-opportunities` skill to find missing motion without changing code.
+12. Use the platform-specific `review-*-animations` skill to review motion that already exists.
 
 ## Install
 
@@ -43,4 +52,5 @@ Each skill is self-contained:
 
 - Advisory swarms stay read-only and converge on one synthesized recommendation.
 - The orchestrator separates planning from execution and enforces explicit file ownership.
+- Motion discovery and review stay platform-native and do not prescribe browser styling or animation APIs.
 - Skills are intentionally narrow so the main agent can compose them without mixing incompatible goals.

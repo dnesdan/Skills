@@ -1,0 +1,4 @@
+interface:
+  display_name: "Apple Design"
+  short_description: "Design native Apple interfaces with purposeful motion."
+  default_prompt: "Use $apple-design to design or review this native Apple interface and its motion."

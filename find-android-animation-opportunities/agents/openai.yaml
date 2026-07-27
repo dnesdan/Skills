@@ -1,0 +1,4 @@
+interface:
+  display_name: "Find Android Animation Opportunities"
+  short_description: "Find high-value native Android motion opportunities."
+  default_prompt: "Use $find-android-animation-opportunities to inspect this Android app and report only motion opportunities that genuinely improve it."

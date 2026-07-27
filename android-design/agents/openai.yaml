@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android Design"
+  short_description: "Design adaptive Android interfaces with purposeful motion."
+  default_prompt: "Use $android-design to design or review this native Android interface and its motion."

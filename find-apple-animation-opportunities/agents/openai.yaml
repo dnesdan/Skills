@@ -1,0 +1,4 @@
+interface:
+  display_name: "Find Apple Animation Opportunities"
+  short_description: "Find high-value native Apple motion opportunities."
+  default_prompt: "Use $find-apple-animation-opportunities to inspect this Apple app and report only motion opportunities that genuinely improve it."

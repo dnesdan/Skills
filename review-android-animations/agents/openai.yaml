@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Android Animations"
+  short_description: "Review native Android motion against a strict bar."
+  default_prompt: "Use $review-android-animations to review the animation changes in this Android app and return prioritized file-and-line findings."
