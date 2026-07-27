@@ -9,7 +9,7 @@ A focused collection of reusable Codex skills for product planning, delivery orc
 | Feature Planning Swarm | `feature-planning-swarm` | Advisory swarm | Turns a feature idea into multiple concrete implementation plans with one recommended path. |
 | Feature Extension Swarm | `feature-extension-swarm` | Advisory swarm | Scans the current repo and app surface to propose the most valuable next feature extensions for competitiveness. |
 | Implementation Orchestrator | `implementation-orchestrator` | Execution orchestrator | Converts an approved plan into dependency-aware work packets, parallel execution waves, and validation gates. |
-| Cross-Store Ratings Report | `cross-store-ratings-report` | Store operations report | Produces private portfolio ratings/reviews reports from `asc` and the Google Play developer client, without public scraping. |
+| Cross-Store Ratings Report | `cross-store-ratings-report` | Read-only store intelligence | Produces source-transparent portfolio ratings/review reports with correct windows, coverage, app mapping, themes, and comparable deltas from `asc` and Google Play developer tooling. |
 | WWDC26 App Opportunity Audit | `wwdc26-app-opportunity-audit` | Read-only platform opportunity audit | Audits an Apple app against current iOS 27-era APIs and ranks repo-grounded Apple Intelligence, Siri, system-surface, device, and native-platform opportunities. |
 | Google I/O 26 App Opportunity Audit | `google-io26-app-opportunity-audit` | Read-only platform opportunity audit | Audits an Android app against Android 17 and I/O 2026 APIs and ranks repo-grounded Gemini, AppFunctions, adaptive-surface, device, and native-platform opportunities. |
 | Apple Design | `apple-design` | Current native design guidance | Applies the WWDC 2026 baseline with Xcode 27, current SwiftUI, Liquid Glass, adaptive layout, Metal shaders, and accessibility. |
@@ -47,6 +47,7 @@ Each skill is self-contained:
 - Advisory swarms stay read-only and converge on one synthesized recommendation.
 - The orchestrator separates planning from execution and enforces explicit file ownership.
 - Apple UI guidance is SwiftUI-first and current to WWDC 2026; Android UI guidance is Compose-first and current to Google I/O 2026.
+- Cross-store reporting keeps developer reviews, public Apple storefront aggregates, Google statistics reports, partial coverage, and unavailable metrics explicitly separate.
 - Platform opportunity audits require current first-party sources, repository evidence, explicit availability and maturity labels, privacy and cost analysis, and graceful fallbacks.
 - Consumer AI subscriptions, developer APIs, system-only features, public frameworks, previews, MCP, and cloud trust boundaries are never treated as interchangeable.
 - Legacy UIKit/AppKit and Android View technologies are treated as migration or narrow interoperability concerns, not defaults for new UI.
