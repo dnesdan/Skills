@@ -1,19 +1,19 @@
 ---
 name: prototype-ui-with-imagegen
 description: >-
-  Explore genuinely different visual directions for one native Apple or Android
-  UI surface with Codex's built-in image generation, compare the generated
-  concepts against product and platform constraints, and optionally rebuild a
-  user-selected direction in SwiftUI or Jetpack Compose. Use when the user asks
-  for UI concepts, image-generated redesign variants, a native component or
-  screen prototype, more options around a chosen concept, or implementation of
-  a selected generated direction. Support system-native, hybrid-native, and
-  custom-native visual strategies while preserving product behavior,
-  accessibility, and native implementation. Preserve the app shell, project
-  components, symbols, and design tokens unless the user explicitly puts them
-  in scope. Keep exploration read-only and stop before production changes
-  unless the user explicitly selects a variant to keep. Do not use for web,
-  HTML, CSS, or generated production UI assets.
+  Explore distinct visual directions for one native Apple or Android UI surface
+  with Codex image generation, compare them against real product and platform
+  constraints, and optionally rebuild a selected direction in SwiftUI or
+  Jetpack Compose. Use for UI concepts, image-generated redesign variants,
+  native component or screen prototypes, riffs on a concept, or implementation
+  of a selected direction. Support system-native, hybrid-native, and
+  custom-native strategies while preserving behavior, accessibility, the app
+  shell, project components, symbols, and design tokens unless explicitly in
+  scope. Report a screenshot-backed current-state audit, independent subagent
+  review, labeled contact sheet, tradeoffs, detailed next steps, and downstream
+  skill recommendations. Keep exploration read-only until the user explicitly
+  selects a variant. Do not use for web, HTML, CSS, or generated production UI
+  assets.
 ---
 
 # Prototype Native UI with Image Generation
@@ -77,7 +77,7 @@ it.
 - Use Codex's built-in `image_gen` path by default. Do not require Claude,
   Fable, Codex MCP, another model host, or an API key.
 - Do not create an HTML, CSS, JavaScript, or browser-based variant picker.
-  Present images directly in Codex.
+  Present images and the generated contact sheet directly in Codex.
 - In Explore and Riff, do not edit source, assets, documentation, project
   settings, or Git state. Keep preview artifacts outside the repository.
 - Never ship a generated screenshot as the interface, a sliced mockup, a
@@ -133,6 +133,25 @@ tool, failure, and missing prerequisite. Source-informed exploration may
 continue, but every result remains at least `Concern`; do not declare a winner
 or enter Keep until a runtime baseline or user-provided current screenshot is
 available.
+
+### Report the current state before generation
+
+When a runtime or user-provided screenshot exists, inspect it at full size and
+use focused crops or zoom when needed. Post a concise evidence-backed bullet
+audit in the conversation before or alongside the generated results:
+
+- what already works and should be preserved
+- hierarchy, spacing, typography, alignment, density, and affordance problems
+- clipping, safe-area, keyboard, localization, accessibility, or adaptive risks
+- inconsistent materials, depth, symbols, controls, or platform behavior
+- motion or interaction observations only when recording/runtime evidence exists
+- source/runtime facts versus hypotheses requiring later validation
+
+Anchor each point to a visible region, state, source location, or runtime
+observation. Do not turn personal taste into a confirmed defect. If there is no
+screenshot or runnable baseline, say so and provide only a source-informed
+current-state summary when repository evidence exists, or a brief-informed
+summary when the user's brief is the only evidence.
 
 ## 2. Freeze the brief
 
@@ -203,13 +222,52 @@ regresses preserved platform chrome, changes protected brand tokens, or becomes
 unusable because of malformed text. Keep the original direction thesis during
 a correction.
 
+### Create the labeled design sheet
+
+After the final accepted images exist, create one comparison image with every
+direction in the same order used in the conversation. Use the bundled script:
+
+```text
+python3 scripts/make_contact_sheet.py \
+  --item "A · Quiet Ledger=/absolute/path/quiet.png" \
+  --item "B · Daily Focus=/absolute/path/focus.png" \
+  --item "C · Progress Trail=/absolute/path/trail.png" \
+  --output /absolute/path/prototype-directions.png
+```
+
+Use short, exact variant names. Do not add verdicts, scores, or recommendation
+badges to the sheet; those would bias comparison. Do not use image generation
+to re-create or collage the screenshots because that can alter product details.
+Keep the sheet outside the repository in Explore and Riff. The script requires
+Pillow. If it is unavailable, report the missing local dependency and request
+approval before installing it; still present the individual images, but do not
+silently omit or fabricate the sheet.
+
 ## 4. Evaluate before recommending
 
 Read [evaluation-rubric.md](references/evaluation-rubric.md). Evaluate each
 direction as `Pass`, `Concern`, or `Fail`; do not manufacture numeric precision.
 A hard failure cannot win.
 
+When continuing from pre-generated directions, recover the original frozen
+brief, prompts, native component maps, and baseline from the conversation or
+artifacts. If any are unavailable, reconstruct only what explicit evidence
+supports, list the missing provenance, downgrade every affected result to at
+least `Concern`, and re-check generated facts and same-state comparability from
+scratch. Do not inherit an earlier winner or verdict.
+
+When subagents are available, assign one independent read-only critic after the
+images and sheet exist. Give it only the frozen brief, preservation map,
+baseline evidence, generated images, contact sheet, and evaluation rubric. Ask
+it to identify invariant violations, unsupported affordances, relative
+strengths, risks, and whether any literal image is eligible to win. Do not tell
+it the parent's preferred direction or intended answer. The parent remains
+responsible for the final recommendation and must note material disagreement.
+If subagents are unavailable, perform the same second-pass review and disclose
+that it was not independent.
+
 Present each image inline at a useful size rather than only in a contact sheet.
+Also present the labeled contact sheet inline as the fast comparison view.
 For each direction, state:
 
 - what it tests
@@ -223,16 +281,11 @@ For each direction, state:
 Recommend one result only when it clearly fits the brief. Otherwise say that
 there is no winner and identify the smallest useful next generation pass.
 
-Return exactly:
-
-1. **Prototype brief**
-2. **Runtime baseline**
-3. **Preservation map**
-4. **Generated directions**
-5. **Native component and constraint comparison**
-6. **Recommendation**
-7. **What image generation did not verify**
-8. **Choose next step** — `keep <name>`, `riff <name>`, or stop
+Read [conversation-output.md](references/conversation-output.md) and follow its
+complete conversation contract. The response must include the current-state
+audit, labeled design sheet, per-direction assessment, independent review,
+recommendation rationale, risks, expanded next steps, and downstream-skill
+handoff. Do not reduce the result to image links and a winner.
 
 Then stop. Explore and Riff must not proceed into implementation.
 
@@ -244,8 +297,9 @@ job, content, component strategy, shell scope, native component map, protected
 brand tokens, and platform behavior.
 
 Generate three fresh alternatives, each changing one or two named aspects.
-Avoid cosmetic mutations. Re-run the same evaluation and output contract, then
-stop again.
+Avoid cosmetic mutations. Re-run the current-state delta, contact sheet,
+independent review, evaluation, and conversation output contract, then stop
+again.
 
 ## 6. Keep and rebuild natively
 
