@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit and Clean Skills"
+  short_description: "Safely inventory, deduplicate, and clean agent skills."
+  default_prompt: "Use $audit-and-clean-skills to audit my Codex and Claude skill inventory, propose reversible cleanup actions, and wait for approval before changing anything."
