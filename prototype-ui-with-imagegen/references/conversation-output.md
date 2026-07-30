@@ -27,6 +27,8 @@ State the platform, viewport, exact state, primary job, allowed controls, select
 
 Name the build/runtime evidence and capture conditions. Include concrete blockers and their consequence for recommendation confidence.
 
+Also name the image-generation backend used for the run — built-in or delegated `codex exec` — and confirm that all directions came from the same one. Report any backend failure or retry rather than hiding it.
+
 ## 4. Preservation map
 
 Use a compact table:

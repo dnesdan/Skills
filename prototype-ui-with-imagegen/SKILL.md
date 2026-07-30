@@ -2,9 +2,10 @@
 name: prototype-ui-with-imagegen
 description: >-
   Explore distinct visual directions for one native Apple or Android UI surface
-  with Codex image generation, compare them against real product and platform
-  constraints, and optionally rebuild a selected direction in SwiftUI or
-  Jetpack Compose. Use for UI concepts, image-generated redesign variants,
+  with built-in or delegated Codex image generation, compare them against real
+  product and platform constraints, and optionally rebuild a selected direction
+  in SwiftUI or Jetpack Compose. Runs in Codex or in any host that can call
+  `codex exec`. Use for UI concepts, image-generated redesign variants,
   native component or screen prototypes, riffs on a concept, or implementation
   of a selected direction. Support system-native, hybrid-native, and
   custom-native strategies while preserving behavior, accessibility, the app
@@ -72,12 +73,33 @@ Component strategy does not imply shell scope. A Custom-native content surface
 still preserves the app shell unless the user explicitly authorizes changing
 it.
 
+## Select the image-generation backend
+
+Resolve this once, before any generation, and state the selected backend in the
+run output.
+
+- **Built-in** — default when the host has its own image generation, as Codex
+  does. Call `image_gen` directly, one call per direction.
+- **Delegated `codex exec`** — for a host without built-in image generation,
+  such as Claude Code or another agent CLI, when an authenticated Codex CLI is
+  available on the machine. Read
+  [codex-exec-backend.md](references/codex-exec-backend.md) and follow its
+  invocation, prompt contract, and verification steps exactly. The host still
+  owns the audit, brief, evaluation, contact sheet, independent review, and any
+  native implementation; Codex only produces images.
+
+Use one backend for every direction in a run so comparison stays fair. Neither
+backend requires a separate image-generation API key.
+
 ## Enforce hard boundaries
 
-- Use Codex's built-in `image_gen` path by default. Do not require Claude,
-  Fable, Codex MCP, another model host, or an API key.
+- Generate every image through the selected backend's real image-generation
+  model. Never satisfy a generation step with ImageMagick, Python, PIL, SVG,
+  HTML, a screenshot edit, or any other local drawing or compositing tool, and
+  never present such a file as a generated direction.
+- Do not require Fable, an external MCP server, or an image-generation API key.
 - Do not create an HTML, CSS, JavaScript, or browser-based variant picker.
-  Present images and the generated contact sheet directly in Codex.
+  Present images and the generated contact sheet directly in the conversation.
 - In Explore and Riff, do not edit source, assets, documentation, project
   settings, or Git state. Keep preview artifacts outside the repository.
 - Never ship a generated screenshot as the interface, a sliced mockup, a
@@ -97,9 +119,11 @@ it.
 - Preserve unrelated user changes. Commit only when the user asked for a
   commit.
 
-If built-in image generation is unavailable, state that the default path cannot
-run. Offer the imagegen CLI fallback only as an explicit opt-in because it
-requires an API key; never switch silently.
+If the host has no built-in image generation, switch to the delegated
+`codex exec` backend. If neither backend is available — no built-in generation
+and no authenticated Codex CLI — state that image generation cannot run and
+stop before generating. Offer the imagegen CLI fallback only as an explicit
+opt-in because it requires an API key; never switch silently.
 
 ## 1. Reconstruct the real product
 
@@ -118,8 +142,9 @@ Before prompting:
    adaptive layouts as relevant.
 5. For an existing runnable app, build or launch it and capture the exact target
    state before the first image-generation call. Treat this runtime baseline as
-   required, not optional. For a local screenshot, call `view_image` before
-   passing it to built-in image generation.
+   required, not optional. Inspect a local screenshot yourself before passing it
+   to generation — `view_image` in Codex, the host's own image-reading tool
+   elsewhere. On the delegated backend, attach it with `-i`.
 
 Label every input image:
 
@@ -192,9 +217,10 @@ Read [native-component-gate.md](references/native-component-gate.md) and create
 a native component map for every direction before issuing its prompt.
 Classify each request as `ui-mockup`.
 
-Issue one built-in `image_gen` call per direction with a separate prompt. Do not
-use one multi-output request as a substitute for intentionally different
-prompts. Generate three directions by default and no more than five.
+Issue one generation call per direction through the selected backend, each with
+a separate prompt. Do not use one multi-output request as a substitute for
+intentionally different prompts. Generate three directions by default and no
+more than five.
 
 Give every direction:
 
@@ -221,6 +247,13 @@ essential content, violates its component strategy or preservation map,
 regresses preserved platform chrome, changes protected brand tokens, or becomes
 unusable because of malformed text. Keep the original direction thesis during
 a correction.
+
+On the delegated backend, first run the backend verification in
+[codex-exec-backend.md](references/codex-exec-backend.md): confirm the file
+exists at the requested path, that the call did not fall back to a local
+drawing tool, and that nothing outside the artifact directory changed. A
+backend failure is not a weak direction; report it rather than accepting the
+file or hand-building a replacement.
 
 ### Create the labeled design sheet
 

@@ -1,10 +1,34 @@
 # Prototype Native UI with Image Generation
 
-Explore multiple native Apple or Android UI directions with Codex image generation, evaluate them against the real product, and rebuild only an explicitly selected direction in SwiftUI or Jetpack Compose.
+Explore multiple native Apple or Android UI directions with built-in or delegated Codex image generation, evaluate them against the real product, and rebuild only an explicitly selected direction in SwiftUI or Jetpack Compose.
 
 The skill is designed for product work, not mood-board generation. It inspects the current implementation and runtime state, freezes product invariants, generates intentionally different directions, rejects unsupported UI, asks an independent subagent to critique the results, and gives a decision-ready recommendation.
 
-It works directly in Codex and does not require Claude, Fable, an external MCP server, or a separate image-generation API key.
+It works directly in Codex through built-in image generation, and in any other host — Claude Code, another agent CLI, a plain shell — by delegating each image to `codex exec`. Neither path needs Fable, an external MCP server, or a separate image-generation API key.
+
+## Image-generation backends
+
+| Backend | When | How |
+| --- | --- | --- |
+| Built-in | The host generates images itself, as Codex does | One `image_gen` call per direction |
+| Delegated | The host has no image generation but the machine has an authenticated Codex CLI | One `codex exec` process per direction |
+
+The host always stays the orchestrator: it captures the runtime baseline, freezes the brief, evaluates results, composes the contact sheet, runs the independent review, and writes any native code. The delegated backend contributes images and nothing else, and every returned file is verified before it is allowed into the comparison.
+
+A delegated call looks like this — the prompt goes on stdin because `-i` is variadic and would otherwise swallow it:
+
+```bash
+codex exec \
+  -C "$OUT_DIR" \
+  --skip-git-repo-check \
+  --enable image_generation \
+  -s workspace-write \
+  -o "$OUT_DIR/A.last-message.txt" \
+  -i "$BASELINE_PNG" \
+  - < "$OUT_DIR/prompt-A.txt"
+```
+
+`$OUT_DIR` is an artifact directory outside the repository, which is what keeps Explore and Riff read-only with respect to the app. Each prompt bans ImageMagick, Python, PIL, SVG and every other local drawing tool: without that ban a delegated run will occasionally hand back a hand-composited file instead of a generated concept. See [`references/codex-exec-backend.md`](references/codex-exec-backend.md) for the full contract.
 
 ## Example output
 
@@ -133,7 +157,7 @@ The output is deterministic for the same inputs and parameters: the script perfo
 
 ## Requirements
 
-- Codex with built-in image generation
+- Codex with built-in image generation, or any host plus an authenticated `codex` CLI with image generation enabled
 - A native Apple or Android project for implementation-backed work
 - A working simulator or emulator for runtime-verified redesigns
 - Python 3 and Pillow for the local comparison sheet
@@ -152,6 +176,7 @@ If the current app cannot be built or captured, exploration may continue from so
 ## Files
 
 - `SKILL.md` — complete workflow and guardrails
+- `references/codex-exec-backend.md` — delegated `codex exec` invocation, prompt contract, and verification
 - `references/` — prompting, native component, evaluation, output, implementation, and validation guidance
 - `scripts/make_contact_sheet.py` — local labeled image-sheet composer
 - `assets/prototype-directions-example.png` — real forward-test comparison sheet
